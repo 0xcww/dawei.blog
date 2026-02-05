@@ -1,23 +1,25 @@
 import { defineConfig } from 'vite';
 import { copyFileSync, mkdirSync, readdirSync, statSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 function copyRecursiveSync(src, dest) {
-  const exists = statSync(src, { throwIfNoEntry: false });
-  const isDirectory = exists && exists.isDirectory();
-
-  if (isDirectory) {
-    mkdirSync(dest, { recursive: true });
-    readdirSync(src).forEach(childItemName => {
-      copyRecursiveSync(join(src, childItemName), join(dest, childItemName));
-    });
-  } else if (exists) {
-    copyFileSync(src, dest);
+  try {
+    const exists = statSync(src, { throwIfNoEntry: false });
+    if (exists && exists.isDirectory()) {
+      mkdirSync(dest, { recursive: true });
+      readdirSync(src).forEach(childItemName => {
+        copyRecursiveSync(join(src, childItemName), join(dest, childItemName));
+      });
+    } else if (exists) {
+      copyFileSync(src, dest);
+    }
+  } catch(e) {
+    console.log(`Error copying ${src} to ${dest}: ${e.message}`);
   }
 }
 
 export default defineConfig({
-  root: './curtis-art-assets',
+  // root: '.', // default
   server: {
     port: 3000,
     open: true
@@ -27,12 +29,17 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      input: './curtis-art-assets/index.html'
+      input: resolve(__dirname, 'index.html')
     }
   },
   plugins: [{
     name: 'copy-static-files',
     closeBundle() {
+      const distDir = resolve(__dirname, 'dist');
+      try {
+          mkdirSync(distDir, { recursive: true });
+      } catch(e){}
+
       const staticFiles = [
         'indexstyle.css',
         'indexstyle-dark.css',
@@ -58,21 +65,32 @@ export default defineConfig({
         'index-zh.html'
       ];
 
-      try {
-        [...staticFiles, ...htmlFiles].forEach(file => {
-          try {
-            copyFileSync(
-              join('curtis-art-assets', file),
-              join('curtis-art-assets', 'dist', file)
-            );
-          } catch (e) {}
-        });
+      [...staticFiles, ...htmlFiles].forEach(file => {
+        try {
+          copyFileSync(
+            resolve(__dirname, file),
+            join(distDir, file)
+          );
+        } catch (e) {
+          console.log(`Failed to copy ${file}: ${e.message}`);
+        }
+      });
 
-        copyRecursiveSync('curtis-art-assets/images', 'curtis-art-assets/dist/images');
-        copyRecursiveSync('curtis-art-assets/flair', 'curtis-art-assets/dist/flair');
-        copyRecursiveSync('curtis-art-assets/music', 'curtis-art-assets/dist/music');
-        copyRecursiveSync('curtis-art-assets/ART', 'curtis-art-assets/dist/ART');
-      } catch (e) {}
+      // Directories
+      copyRecursiveSync(resolve(__dirname, 'images'), join(distDir, 'images'));
+      copyRecursiveSync(resolve(__dirname, 'flair'), join(distDir, 'flair'));
+      copyRecursiveSync(resolve(__dirname, 'art'), join(distDir, 'art'));
+      
+      // Music (copy mp3s from root to dist/music)
+      const musicDest = join(distDir, 'music');
+      try { mkdirSync(musicDest, { recursive: true }); } catch(e){}
+      try {
+        readdirSync(__dirname).filter(f => f.endsWith('.mp3')).forEach(f => {
+            copyFileSync(resolve(__dirname, f), join(musicDest, f));
+        });
+      } catch(e) {
+          console.log(`Failed to copy music: ${e.message}`);
+      }
     }
   }]
 });
