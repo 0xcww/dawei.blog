@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="台灣機車環島遊記">
+    <link href="/iframe-dark.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png">
+    <style>
+        img[data-src] {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        img[data-src].loaded {
+            opacity: 1;
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        .photo-grid img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid #666;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .photo-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(255,255,255,0.3);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 20px;
+            user-select: none;
+        }
+        .lightbox-nav:hover {
+            color: #ccc;
+        }
+        .lightbox-prev {
+            left: 20px;
+        }
+        .lightbox-next {
+            right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+            <center>
+                <h3>台灣機車環島</h3>
+            </center>
+            <br>
+
+            <p><b>第一天：</b>打包好我的KTR 150cc，翻過陽明山往基隆出發。騎過小鎮時想起了六年前那位狂熱的紐西蘭朋友。記錄了幾個新的潛水點。原本計畫這趟旅行要露營野宿，但最終只露營了一次。第一天騎了大約45公里到宜蘭，在外澳找了間青年旅館，價格跟福隆海邊露營區一樣。本來想去Drifters披薩酒吧，因為有跟同事們一起去的美好回憶，但最後還是決定逛頭城老街。最後跟阿貓先生買了美味的雞肉香菇湯跟蔥麵。我跟他提到我的行程，他說「哇好遠喔，祝你好運，路上小心，卡車司機很危險。」我請他讓我拍張照，他很開心地答應了。</p>
+
+            <div class="photo-grid">
+                <img data-src="https://i.ibb.co/WWsp95S5/day-1-1.jpg" alt="第一天照片 1">
+                <img data-src="https://i.ibb.co/WvFZ4PPM/Day-1-2.jpg" alt="第一天照片 2">
+                <img data-src="https://i.ibb.co/dw26rgFx/Day-1-3.jpg" alt="第一天照片 3">
+                <img data-src="https://i.ibb.co/398QR5v7/Day-1-5.jpg" alt="第一天照片 5">
+                <img data-src="https://i.ibb.co/7dMxLKjQ/Day-1-6.jpg" alt="第一天照片 6">
+                <img data-src="https://i.ibb.co/YTXdpCrq/day-1-7.jpg" alt="第一天照片 7">
+            </div>
+
+            <p><b>第二天：</b>早上七點左右起床，跳進外澳海灘的水裡，游了幾圈然後像隻笨拙的小海豹一樣在浪裡翻騰。想過要搭船去龜山島，但最後沒去。在路上停了幾間廟之後，在宜蘭邊界的7-11外面遇到一些外國人，他們說要去參加嬉皮音樂節。沿著陡峭的懸崖騎了一段很棒的路，跟哈雷騎士們比讚，對自行車騎士喊加油，然後去看了花蓮郊外的一些露營地。問了警察能不能在沙灘露營，他說「不行，沒開放。」到處繞了一下，最後一個還有空位的露營地老闆給我打了折，還不錯。隔天早上，我的露營夥伴老凱超級友善，跟他、他的中國太太和他們的朋友一起吃了頓美味的早餐。還好沒在沙灘露營，因為凱說有一大群人早上四點會划獨木舟經過，正好會穿過我可能紮營的地方。</p>
+
+            <div class="photo-grid">
+                <img data-src="https://i.ibb.co/tpDsCRPS/Day-2-1.jpg" alt="第二天照片 1">
+                <img data-src="https://i.ibb.co/1GYpyzk3/Day-2-2.jpg" alt="第二天照片 2">
+                <img data-src="https://i.ibb.co/N60jkXtx/Day-2-3.jpg" alt="第二天照片 3">
+                <img data-src="https://i.ibb.co/XkfRJ6xg/Day-2-4.jpg" alt="第二天照片 4">
+                <img data-src="https://i.ibb.co/XfwSJtjZ/Day-2-5.jpg" alt="第二天照片 5">
+                <img data-src="https://i.ibb.co/SXtqH5kJ/Day-2-6.jpg" alt="第二天照片 6">
+                <img data-src="https://i.ibb.co/DHBbWZ0c/Day-2-7.jpg" alt="第二天照片 7">
+            </div>
+
+            <p><b>第三天：</b>早上十點左右離開花蓮，之前兩位很酷的機車行師傅幫我檢查了車況。騎過那個嬉皮音樂節會場。給我一種「火人節的殘骸」感覺，但聽說星期六晚上超嗨的。繼續騎著我的機車穿過大約100公里的山路和海岸線，我把它取名叫「Katie」（KT-R 150，懂嗎）。停下來吃了烤飛魚跟香腸。這一帶有很多原住民沿海社區、基督教教堂和農場。在台東市區找了間飯店，吃了一些當地小吃，包括柴魚片米粉和刈包。找到一間精釀啤酒店，跟一個飛行員喝得很嗨。他之前有在美國待過；在露營地用了一整天中文讓我有點累，所以就用英文跟他聊美國政治、波特蘭還有其他有趣的話題。</p>
+
+            <div class="photo-grid">
+                <img data-src="https://i.ibb.co/yF9sHhfy/Day-3-1.jpg" alt="第三天照片 1">
+                <img data-src="https://i.ibb.co/qYf8rMZk/Day-3-3.jpg" alt="第三天照片 3">
+                <img data-src="https://i.ibb.co/xKLnC2M9/Day-3-4.jpg" alt="第三天照片 4">
+                <img data-src="https://i.ibb.co/Hp3Kn77m/Day-3-5.jpg" alt="第三天照片 5">
+                <img data-src="https://i.ibb.co/LXysVbZG/Day-3-6.jpg" alt="第三天照片 6">
+                <img data-src="https://i.ibb.co/svQSCbTJ/Day-3-7.jpg" alt="第三天照片 7">
+                <img data-src="https://i.ibb.co/npgL0vn/Day-3-8.jpg" alt="第三天照片 8">
+                <img data-src="https://i.ibb.co/7t6wXRBk/Day-3-9.jpg" alt="第三天照片 9">
+            </div>
+
+            <p><b>第四天：</b>被兩架戰鬥機的聲音吵醒，然後跟一大群遊客搏鬥著要把Katie推上渡輪。坐船讓我暈船了，如果你要搭船：記得買暈船藥！抵達綠島燈塔旁的飯店。老闆很熱心但對我一個人沒什麼計畫就來旅行有點驚訝。第一次潛水就下到大約8公尺深。遇到一個從海上市集回來的人，我們騎上山頭觀景台喝易開罐啤酒。這裡的星空美得令人屏息。在黑暗中騎過蜿蜒的山路。接下來四天都在潛水、吃小吃、探索這座島嶼。那座國民黨在戒嚴期間關押政治犯的監獄就在這裡（非常令人沮喪但也很有意思）。</p>
+
+            <div class="photo-grid">
+                <img data-src="https://i.ibb.co/Q7tkfXYD/Day-4-1.jpg" alt="第四天照片 1">
+                <img data-src="https://i.ibb.co/G1kBvfn/Day-4-2.jpg" alt="第四天照片 2">
+                <img data-src="https://i.ibb.co/RTSys868/Day-4-3.jpg" alt="第四天照片 3">
+                <img data-src="https://i.ibb.co/PzD5gWr5/Day-4-4.jpg" alt="第四天照片 4">
+                <img data-src="https://i.ibb.co/Zpdj3d8q/Day-4-5.jpg" alt="第四天照片 5">
+                <img data-src="https://i.ibb.co/v66vgRp1/Day-4-6.jpg" alt="第四天照片 6">
+                <img data-src="https://i.ibb.co/21wJX90f/Day-4-7.jpg" alt="第四天照片 7">
+                <img data-src="https://i.ibb.co/RGWRYQNP/Day-4-8.jpg" alt="第四天照片 8">
+                <img data-src="https://i.ibb.co/vxxJTQDx/Day-4-9.jpg" alt="第四天照片 9">
+                <img data-src="https://i.ibb.co/xS6gLR1h/Day-4-10.jpg" alt="第四天照片 10">
+            </div>
+
+            <p><b>第五天：</b>吃了碗牛肉麵當早餐，繼續沿著海岸線前進。一路往上、往上、往上穿過危險的單線山路，經過牡丹水庫，穿越農業區到達墾丁。去了七年前去過的一間雷鬼酒吧，遇到一些從台北來的人邀我一起潛水。在飯店之間穿梭，喝酒、吃海鮮、潛水。</p>
+
+            <div class="photo-grid">
+                <img data-src="https://i.ibb.co/SDjtkmDW/Day-5-1.jpg" alt="第五天照片 1">
+                <img data-src="https://i.ibb.co/sv4914CD/Day-5-2.jpg" alt="第五天照片 2">
+                <img data-src="https://i.ibb.co/Qj64p5sw/Day-5-3.jpg" alt="第五天照片 3">
+                <img data-src="https://i.ibb.co/LdkMDkdf/Day-5-4.jpg" alt="第五天照片 4">
+                <img data-src="https://i.ibb.co/Y7N7GTs4/Day-5-5.jpg" alt="第五天照片 5">
+                <img data-src="https://i.ibb.co/qMMmmvTd/Day-6-1.jpg" alt="第六天照片 1">
+                <img data-src="https://i.ibb.co/tM2V6zkB/Day-6-2.jpg" alt="第六天照片 2">
+                <img data-src="https://i.ibb.co/7Nz2qts5/Day-6-3.jpg" alt="第六天照片 3">
+                <img data-src="https://i.ibb.co/BVzRtzxs/Day-6-4.jpg" alt="第六天照片 4">
+                <img data-src="https://i.ibb.co/XxxZvbpt/Day-6-5.jpg" alt="第六天照片 5">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <span class="lightbox-nav lightbox-prev" id="lightbox-prev">&#10094;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <span class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</span>
+    </div>
+
+    <script>
+        // Lazy loading script for images
+        const lazyImages = document.querySelectorAll('img[data-src]');
+
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.add('loaded');
+                    img.removeAttribute('data-src');
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px'
+        });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+
+        let currentImageIndex = 0;
+        let allImages = [];
+
+        // Add click handlers to all grid images
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.photo-grid img')) {
+                allImages = Array.from(document.querySelectorAll('.photo-grid img'));
+                currentImageIndex = allImages.indexOf(e.target);
+                showLightbox(e.target.src);
+            }
+        });
+
+        function showLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % allImages.length;
+            lightboxImg.src = allImages[currentImageIndex].src;
+        }
+
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+            lightboxImg.src = allImages[currentImageIndex].src;
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxNext.addEventListener('click', showNextImage);
+        lightboxPrev.addEventListener('click', showPrevImage);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNextImage();
+            if (e.key === 'ArrowLeft') showPrevImage();
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Taiwanese icons remixed">
+    <link href="/iframe.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png">
+    <style>
+        .photo-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+            width: 100%;
+        }
+        .photo-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .photo-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+            <center>
+                <h3>TAIWANESE ICONS REMIXED</h3>
+            </center>
+            <br>
+
+            <p>Bao Li Da (保力達B) is a local drink that is a combination of chinese medicine and alcohol [~10%]. It tastes kind of like an earthy cough syrup with too much sugar. My gym trainer said it will pickle your insides slightly differently than normal alcohol. I prefer mixing it with a Gold Medal Taiwan beer, but others recommend root beer soda or green tea.</p>
+
+            <div class="photo-grid">
+                <img src="https://i.ibb.co/KcskHXpR/bao-li-da.png" alt="Bao Li Da design">
+            </div>
+
+            <p>I love the design of the brand/ bottle and wanted to make an homage to it in the form of wearable clothing.</p>
+
+            <p>This is a clear case of copyright infringement, so you can't buy them. However I will be happy to send you one in the mail in exchange for something interesting.</p>
+
+            <p>Betel nut boxes are ubiquitous. I've seen enough instagram galleries curating these; I won't pretend like I was the first person to highlight them in a hipsterish way. I do feel like these would be a hit being sold at a night market or tourist spot though.</p>
+
+            <div class="photo-grid">
+                <img src="https://i.ibb.co/xKjcRmBs/betel-nut-babes.png" alt="Betel nut babes design">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.photo-grid img')) {
+                lightboxImg.src = e.target.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('active') && e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

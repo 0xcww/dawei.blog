@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Xiao Wei Tshirt design project">
+    <link href="/iframe.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png">
+    <style>
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        .photo-grid img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .photo-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+            <center>
+                <h3>XIAO WEI TSHIRT</h3>
+            </center>
+            <br>
+
+            <p>I made this t-shirt as a gag gift/ testament to my delusion in dating. (I'm holding out for a Taiwanese pop star or heiress. If you are looking for a sentimental American guy, please DM me!</p>
+
+            <div class="photo-grid">
+                <img src="https://i.ibb.co/n8sPZJgs/xiaowei-t-shirt-front.png" alt="Front of shirt">
+                <img src="https://i.ibb.co/yc2r9dfz/back.png" alt="Back of shirt">
+            </div>
+
+            <p>The front lists my qualities, the back lists the different micro archetypes of Taiwanese gals I am attracted to. (fit girls, fashionistas, fiery women, etc)</p>
+
+            <p>I handed these out to friends, acquaintances, KTV hostesses, and one nice young man who bought a mechanical keyboard from me in the middle of Taipei main station. I have not gotten a single Instagram follower from this endeavor, but I did laugh heartily when presenting it to people, so I think the couple thousand NTD was well worth it.</p>
+
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.photo-grid img')) {
+                lightboxImg.src = e.target.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('active') && e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

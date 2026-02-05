@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="台灣圖標重混">
+    <link href="/iframe-dark.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png">
+    <style>
+        .photo-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+            width: 100%;
+        }
+        .photo-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .photo-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+            <center>
+                <h3>台灣圖標重混</h3>
+            </center>
+            <br>
+
+            <p>保力達B是一種結合中藥和酒精[約10%]的本地飲料。它的味道有點像帶有太多糖的土味咳嗽糖漿。我的健身教練說它會以與普通酒精略有不同的方式醃製你的內臟。我更喜歡將它與金牌台灣啤酒混合，但其他人推薦根啤汽水或綠茶。</p>
+
+            <div class="photo-grid">
+                <img src="https://i.ibb.co/KcskHXpR/bao-li-da.png" alt="保力達設計">
+            </div>
+
+            <p>我喜歡這個品牌/瓶子的設計，想以可穿戴服裝的形式向它致敬。</p>
+
+            <p>這明顯是侵犯版權，所以你不能購買。不過，我很樂意寄一件給你，以交換一些有趣的東西。</p>
+
+            <p>檳榔盒無處不在。我看過足夠多的Instagram畫廊策劃這些；我不會假裝我是第一個以時髦方式突出它們的人。不過我確實覺得這些在夜市或旅遊景點銷售會很受歡迎。</p>
+
+            <div class="photo-grid">
+                <img src="https://i.ibb.co/xKjcRmBs/betel-nut-babes.png" alt="檳榔西施設計">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.photo-grid img')) {
+                lightboxImg.src = e.target.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('active') && e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

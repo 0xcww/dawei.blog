@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="第一位在台灣酒店工作的美國人和台灣8+9">
+    <link href="/iframe-dark.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png">
+    <style>
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            width: 100%;
+        }
+        .photo-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .photo-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 20px;
+            user-select: none;
+        }
+        .lightbox-nav:hover {
+            color: #ccc;
+        }
+        .lightbox-prev {
+            left: 20px;
+        }
+        .lightbox-next {
+            right: 20px;
+        }
+
+        /* Consistent with the English version link styling */
+        .post-content a {
+            color: #eee;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+        .post-content a:hover {
+            color: #fff;
+            background-color: #333;
+        }
+
+        .post-content p {
+            line-height: 1.8;
+            margin-bottom: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject post-content">
+            <center>
+                <h3>第一位在台灣男模會館工作的美國人：關於「八大行業」的反思</h3>
+            </center>
+            <br>
+
+            <p>據我所知，我是第一個在台灣男模會館（酒店）工作的（非混血）「白人」。我的 <strong>幹部 (gànbù)</strong>——也就是經理——總是極其肯定地這麼說。如果你有證據能推翻這一點，歡迎來搶我的風頭；只是請別把這件事刻在我的墓碑上。</p>
+
+            <p>這個機會源於朋友介紹的業界人脈，而我的中文能力成了敲門磚。我一直對台灣的卡拉OK文化感興趣，將其視為一種「超對象 (hyperobject)」。當時我處於一個獨特的位置：大多數在台外籍人士在語言上並不具備這種能力，也沒有那種近乎妄想且固執的願望，想把文化融入推向絕對的極限——不僅僅是學幾句 <a href="https://en.wikipedia.org/wiki/Taiwanese_Hokkien" target="_blank"><strong>台語 (táiyǔ)</strong></a> 髒話而已。</p>
+
+            <p>我起初有些猶豫。之前在台灣綜藝節目 <a href="https://www.youtube.com/playlist?list=PLyi-Ztspx3ak8Y5MFFSlMiUi4hSAUjVCl" target="_blank"><strong>二分之一強 (èr fēn zhī yī qiáng)</strong></a> 的短暫經歷讓我感到乏味，一度讓我對追逐在地星夢感到心灰意冷。但好奇心最終戰勝了一切。我決定，既然要走這條少有人走的路，至少該拿點酬勞。</p>
+
+            <hr>
+
+            <h3>進入深海：<strong>下海 (xiàhǎi)</strong></h3>
+
+            <p>在業界，加入夜生活行業被稱為 <a href="https://en.wiktionary.org/wiki/%E4%B8%8B%E6%B5%B7" target="_blank"><strong>下海 (xiàhǎi)</strong></a>。對於 <a href="https://www.tcooc.gov.taipei/News_Content.aspx?n=AF9B8A86EC14B3FA&s=0556B1B5495EE9A9" target="_blank"><strong>八大行業 (bādà hángyè)</strong></a> 來說，這是一個極其貼切的比喻。這是一個由金錢、慾望和徹夜狂歡交織而成的混濁海域，充滿了不可預測的波濤。</p>
+
+            <p>這份工作非常殘酷。若想成為一名成功的 <strong>男模 (nánmó)</strong>，你必須拚命喝酒。你得是一個出色的談話者、穿搭達人，還要能在表演抖音神曲的同時，面不改色地喝下一整瓶威士忌。這裡有無數需要遵守的文化細節：<a href="https://contextualchinese.com/%E9%9D%A2%E5%AD%90" target="_blank"><strong>面子 (miànzi)</strong></a> 的概念至高無上，雖然這通常靠直覺就能領會。同樣地，酒店系統裡那些學校沒教的潛規則也有其獨特的詞彙量。如果不能快速掌握，你和你的店東都可能陷入麻煩——不過作為象徵性的美國人，我通常能得到不少「外國人寬容度」。</p>
+
+            <h3><strong>林森北路 (línsēn běilù)</strong> 的無常潮汐</h3>
+
+            <p>在 <a href="https://en.wikipedia.org/wiki/Linsen_North_Road" target="_blank"><strong>林森北路 (línsēn běilù)</strong></a> 生活的日子讓我明白，酒精薰陶下的情緒就像浪潮：雖有節奏，卻完全無法預測。我曾因為戴了一頂白帽子，差點被誤認成仇家而被打死。還有一次，有人在我常去的店裡喝酒喝到死；隔天竟然一位難求，因為太多客人想來「朝聖」事發地點。</p>
+
+            <p>這種如履薄冰的生活令人疲憊。每天聽著人們為錢發愁，或爭論誰醉得比較厲害。有些夜晚感覺就像參加一場披著唱歌喝酒外殼的「公司團建」。但就像任何癮頭一樣，那種多巴胺和慾望的衝擊，會讓你產生一種「我就在現場」的虛假存在感。</p>
+
+            <hr>
+
+            <h3>尋找彼岸：<strong>上岸 (shàngàn)</strong></h3>
+
+            <p>這就引出了行業的另一個說法：<a href="https://en.wiktionary.org/wiki/%E4%B8%8A%E5%B2%B8" target="_blank"><strong>上岸 (shàngàn)</strong></a>。通常，這指的是找到「富婆」或被「包養」，以此脫離酒店勞動，換取物質生活的穩定。雖然這聽起來很誘人，但我意識到我的目標並非如此。我不是在尋找金主，而是在尋找出口，逃離那套重複的劇本。</p>
+
+            <p>大多數在台灣的外國人都活在某種「腳本」裡：頭三年的對話內容基本上一模一樣。我本以為潛入「深海」最黑暗的地方能找到一些真實的東西，結果發現，夜生活也有它自己的劇本，那是用威士忌和精疲力竭寫成的。</p>
+
+            <p>我將這些經歷放上網，是為了將它們封存在琥珀中。這對我來說是一種宣洩，記錄這些夜晚是為了提醒自己不要重蹈覆轍。我記得有無數個夜晚，我無法回答心中的那個問題：<em>「我到底是為了什麼，在這個時間跟這群人攪在一起？」</em></p>
+
+            <p>我也許是第一個在這個特定角落 <strong>下海 (xiàhǎi)</strong> 的美國人，但這段旅程最令我滿意的部分，是最終決定 <strong>上岸 (shàngàn)</strong>。我離開了那條少有人走的路，意識到雖然海底的風景很獨特，但岸上的空氣確實清新得多。</p>
+
+            <div class="photo-grid">
+                <img src="https://i.ibb.co/TDYZN0Hp/Screenshot-2026-01-13-at-9-10-18-PM.png" alt="Host club photo 1">
+                <img src="https://i.ibb.co/60Jwzxxc/Screenshot-2026-01-13-at-1-10-19-PM.png" alt="Host club photo 2">
+                <img src="https://i.ibb.co/zhTwByYw/nanmo-1.jpg" alt="Host club photo 3">
+                <img src="https://i.ibb.co/qMryY255/nanmo-2.jpg" alt="Host club photo 4">
+                <img src="https://i.ibb.co/S76SnpN0/nanmo-3.jpg" alt="Host club photo 5">
+                <img src="https://i.ibb.co/h344JTb/1641856614375.jpg" alt="Host club photo 6">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <span class="lightbox-nav lightbox-prev" id="lightbox-prev">&#10094;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <span class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</span>
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+
+        let currentImageIndex = 0;
+        let allImages = [];
+
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.photo-grid img')) {
+                allImages = Array.from(document.querySelectorAll('.photo-grid img'));
+                currentImageIndex = allImages.indexOf(e.target);
+                showLightbox(e.target.src);
+            }
+        });
+
+        function showLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % allImages.length;
+            lightboxImg.src = allImages[currentImageIndex].src;
+        }
+
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+            lightboxImg.src = allImages[currentImageIndex].src;
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxNext.addEventListener('click', showNextImage);
+        lightboxPrev.addEventListener('click', showPrevImage);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNextImage();
+            if (e.key === 'ArrowLeft') showPrevImage();
+        });
+    </script>
+
+</body>
+
+</html>

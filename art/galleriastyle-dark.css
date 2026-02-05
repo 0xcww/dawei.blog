@@ -1,0 +1,215 @@
+body {
+    color: white;
+    background-color: #1a1a1a;
+    background-image: url("../images/art-background-black.png");
+}
+
+body a {
+    color: #999;
+}
+
+.corn {
+    margin: 0 auto;
+    margin-top: 50px;
+    background-color: #000;
+    width: 1000px;
+    height: 800px;
+    padding: 15px;
+    background-color: #000;
+    box-shadow: 0px 0px 40px white;
+    border-bottom: 3px double white;
+    border-top: 3px double white;
+    border-right: 1px dashed white;
+    border-left: 1px dashed white;
+    display: flex;
+}
+
+.sidenav {
+    background-color: #000;
+    box-shadow: 4px 4px 5px #333;
+    padding: 10px;
+    width: 110px;
+    height: 780px;
+    float: right;
+    font-family: ms gothic;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-top: 1px white solid;
+    border-bottom: 1px white solid;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.main {
+    padding: 10px;
+    margin-right: 10px;
+    flex: 1;
+    float: left;
+    height: 780px;
+    border: 1px solid white;
+    box-shadow: 4px 4px 5px #333;
+}
+
+.tableof {
+
+    background-color: #000;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid white;
+    font-size: 12px;
+    margin-top:10px;
+    margin-bottom:10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 4px;
+    margin-right:2px;
+    width: 100px;
+    font-family: ms pgothic;
+    box-shadow: 4px 5px #333;
+
+
+
+}
+
+.tableof2 {
+
+    background-color: #000;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid white;
+    font-size: 12px;
+    margin-top:5px;
+    margin-bottom:5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 4px;
+    margin-right:2px;
+    width: 100px;
+
+    box-shadow: 4px 5px #333;
+    flex:auto;
+}
+
+.tableof3 {
+
+    background-color: #000;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid white;
+    font-size: 12px;
+    margin-top:5px;
+    margin-bottom:5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 4px;
+    margin-right:2px;
+    width: 100px;
+    font-family:ms pgothic;
+    box-shadow: 4px 5px #333;
+    flex:auto;
+}
+
+.tableof4 {
+
+    background-color: #000;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid white;
+    font-size: 12px;
+    margin-top:5px;
+    margin-bottom:5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 4px;
+    margin-right:2px;
+    width: 100px;
+    font-family:ms pgothic;
+    box-shadow: 4px 5px #333;
+    flex:auto;
+}
+
+.tableof5 {
+
+    background-color: #000;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid white;
+    font-size: 12px;
+    margin-top:5px;
+    margin-bottom:5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 4px;
+    margin-right:2px;
+    width: 100px;
+    font-family:ms pgothic;
+    box-shadow: 4px 5px #333;
+    flex:auto;
+}
+
+.nav{
+
+    margin-top:4px;
+    padding:2px 3px;
+    line-height:13px;
+    font-size:12px;
+    font-family:ms gothic;
+
+
+
+}
+
+.nav-section {
+    display: none;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    margin: 0;
+    padding: 0;
+}
+
+
+.nav a {
+    display: block;
+    padding: 1px 0;
+    text-decoration: none;
+    color: #999;
+}
+
+.nav a:hover {
+    color: white;
+}
+
+.tableof-button {
+    background-color: #000;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid white;
+    font-size: 12px;
+    margin-top: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 4px;
+    margin-right: 2px;
+    width: 100px;
+    font-family: ms pgothic;
+    box-shadow: 4px 5px #333;
+    text-align: center;
+}
+
+.tableof-button a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    display: block;
+}
+
+.tableof-button:hover {
+    background-color: #1a1a1a;
+}
+
+.ifwame {
+    width: 100%;
+    height: 100%;
+    overflow:auto;
+}
+

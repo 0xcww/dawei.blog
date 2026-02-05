@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="小魏 T恤設計項目">
+    <link href="/iframe-dark.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png">
+    <style>
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        .photo-grid img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid #666;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .photo-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(255,255,255,0.3);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+            <center>
+                <h3>小魏 T恤</h3>
+            </center>
+            <br>
+
+            <p>我做了這件T恤當作搞笑禮物/證明我在約會方面的妄想。（我在等一個台灣流行歌手或千金小姐。如果你在找一個多愁善感的美國男生，請私訊我！）</p>
+
+            <div class="photo-grid">
+                <img src="https://i.ibb.co/n8sPZJgs/xiaowei-t-shirt-front.png" alt="衣服正面">
+                <img src="https://i.ibb.co/yc2r9dfz/back.png" alt="衣服背面">
+            </div>
+
+            <p>正面列出我的優點，背面列出我被吸引的不同台灣女孩微型原型。（健身女孩、時尚達人、火辣女人等）</p>
+
+            <p>我把這些送給朋友、熟人、KTV小姐，還有一個在台北車站跟我買機械鍵盤的好青年。這個計畫沒有讓我得到任何Instagram追蹤者，但我在呈現給大家時笑得很開心，所以我覺得那幾千塊台幣花得很值得。</p>
+
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.photo-grid img')) {
+                lightboxImg.src = e.target.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('active') && e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

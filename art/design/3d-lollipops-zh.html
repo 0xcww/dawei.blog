@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="3D 棒棒糖設計項目">
+    <link href="/iframe-dark.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png">
+    <style>
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            width: 100%;
+        }
+        .photo-grid img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid #666;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .photo-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(255,255,255,0.3);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 20px;
+            user-select: none;
+        }
+        .lightbox-nav:hover {
+            color: #ccc;
+        }
+        .lightbox-prev {
+            left: 20px;
+        }
+        .lightbox-next {
+            right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+            <center>
+                <h3>3D 棒棒糖</h3>
+            </center>
+            <br>
+
+            <p>我原本有個更酷的想法，想做<a href="https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%BE%B7%E5%B0%94%E7%90%83" target="_blank">曼德布爾</a>形狀的棒棒糖，但在意識到模具的複雜性後很快就放棄了。然後我轉向製作台灣形狀的棒棒糖，這在台灣應該會很受歡迎，而且還有平底。</p>
+
+            <p>我嘗試了這個概念，最後決定做卡通渲染/低多邊形地形風格的台灣。為了這個專案我自學了 <a href="https://en.wikipedia.org/wiki/Rhinoceros_3D" target="_blank" rel="noopener">Rhino</a>。我請我的朋友 <a href="https://www.linkedin.com/in/benjaminehrenberg/" target="_blank" rel="noopener">Benjamin</a> 給我很多免費的設計建議，還有 PLA 列印材料來幫我製作原型模具。我最終做到了喜歡的尺寸，灌了矽膠模具，煮了糖和調味劑，做出了還不錯的成品。</p>
+
+            <div class="photo-grid">
+                <img src="https://i.ibb.co/wZPGzJgK/lollipop-marketing-materialsbox.jpg" alt="棒棒糖行銷材料">
+                <img src="https://i.ibb.co/d01dNZcg/received-478947299426820.jpg" alt="棒棒糖原型">
+                <img src="https://i.ibb.co/v6d59T9G/received-984895025212964.gif" alt="棒棒糖動畫">
+                <img src="https://i.ibb.co/CKXgd8PK/Screenshot-2026-01-28-at-9-12-54-PM.png" alt="設計畫板">
+            </div>
+
+            <p>我最後做了俄勒岡州的模具，也開始做德州的。我仍然認為這個點子作為生意是有潛力的！如果有人想接手做，請 email 聯繫我哈哈</p>
+
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <span class="lightbox-nav lightbox-prev" id="lightbox-prev">&#10094;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <span class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</span>
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+
+        let currentImageIndex = 0;
+        let allImages = [];
+
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.photo-grid img')) {
+                allImages = Array.from(document.querySelectorAll('.photo-grid img'));
+                currentImageIndex = allImages.indexOf(e.target);
+                showLightbox(e.target.src);
+            }
+        });
+
+        function showLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % allImages.length;
+            lightboxImg.src = allImages[currentImageIndex].src;
+        }
+
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+            lightboxImg.src = allImages[currentImageIndex].src;
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxNext.addEventListener('click', showNextImage);
+        lightboxPrev.addEventListener('click', showPrevImage);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNextImage();
+            if (e.key === 'ArrowLeft') showPrevImage();
+        });
+    </script>
+
+</body>
+
+</html>
