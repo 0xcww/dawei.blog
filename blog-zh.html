@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="這是屬於我自己的小角落。">
+    <link href="/iframe-dark.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="icon" type="image/png">
+    <style>
+        .post-header {
+            border-bottom: 2px dotted #666;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .post-title-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12px;
+        }
+
+        .post-date {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .post-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .post-music {
+            margin-top: 12px;
+        }
+
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            max-width: 300px;
+            padding: 6px;
+            border: 1px dotted #666;
+            background-color: #111;
+            font-family: "MS PGothic", "ms pgothic", Georgia, serif;
+            font-size: 12px;
+            letter-spacing: 0.4px;
+            color: #eee;
+            position: relative;
+            overflow: visible;
+        }
+
+        .audio-player audio {
+            display: none;
+        }
+
+        .audio-icon {
+            width: 14px;
+            height: 14px;
+            flex: 0 0 auto;
+            image-rendering: pixelated;
+        }
+
+        .audio-toggle {
+            border: 1px solid #666;
+            background-color: #111;
+            color: #eee;
+            padding: 2px 6px;
+            font-family: inherit;
+            font-size: 11px;
+            letter-spacing: 0.3px;
+            text-transform: lowercase;
+            cursor: pointer;
+        }
+
+        .audio-toggle:hover,
+        .audio-progress:hover,
+        .audio-volume:hover {
+            background-color: #222;
+        }
+
+        .audio-progress {
+            position: relative;
+            flex: 1;
+            height: 8px;
+            border: 1px solid #666;
+            background-color: #111;
+            cursor: pointer;
+        }
+
+        .audio-progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background-color: #eee;
+        }
+
+        .audio-volume {
+            position: relative;
+            width: 34px;
+            height: 8px;
+            border: 1px solid #666;
+            background-color: #111;
+            cursor: pointer;
+        }
+
+        .audio-volume-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background-color: #eee;
+        }
+
+        .audio-time {
+            min-width: 36px;
+            font-size: 11px;
+            text-align: right;
+            font-family: Georgia, serif;
+            letter-spacing: 0.3px;
+            color: #ccc;
+        }
+
+        .audio-track {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 8px;
+            padding: 2px 6px;
+            max-width: 170px;
+            border: 1px dotted #666;
+            border-left: none;
+            background-color: #111;
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 13px;
+            letter-spacing: 0.4px;
+        }
+
+        .audio-track-inner {
+            display: inline-flex;
+            gap: 18px;
+            white-space: nowrap;
+            animation: audio-track-scroll 9s linear infinite;
+        }
+
+        .audio-track-text {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        @keyframes audio-track-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .post-content {
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        .post-content a {
+            color: #ccc;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+
+        .post-content a:hover {
+            color: #fff;
+            background-color: #333;
+        }
+
+        .blog-post {
+            margin-bottom: 30px;
+        }
+
+        .blog-post:not(:last-child) {
+            padding-bottom: 20px;
+            border-bottom: 3px double #666;
+        }
+
+        .subject {
+            padding-top: 20px !important;
+        }
+
+        .camera-button {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .camera-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .photo-gallery {
+            display: none;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .photo-gallery.active {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            opacity: 1;
+        }
+
+        .photo-gallery img {
+            width: 100%;
+            height: auto;
+            border: 2px solid #444;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-gallery img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+
+
+
+            <div class="blog-post" id="shrimp-fishing">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#shrimp-fishing" style="text-decoration: none; color: inherit;">釣蝦 OG</a></div>
+                        <div class="post-date">2026年2月1日</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">Infinity Frequencies - Lost Dreams</span>
+                                    <span class="audio-track-text" aria-hidden="true">Infinity Frequencies - Lost Dreams</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_5" preload="metadata">
+                                <source src="/music/lost-dreams.mp3" type="audio/mpeg">
+                                您的瀏覽器不支援音訊元素。
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+
+                    <p>早在 2011 年，我就走在時代前沿，每天花八小時狂吸演算法內容，比這成為常態還早得多。有一天我在 Facebook 上看到一篇關於台灣「室內釣蝦」的貼文。我瞬間被迷住了，主要是因為新奇。</p>
+
+                    <p>美國有鱒魚養殖場，但沒有蝦，也沒有什麼能比得上這種家庭活動的感覺。最接近的美國對應物可能是鱒魚養殖場，但文化上感覺更像保齡球。帶孩子去、和朋友一起、喝幾杯配點小吃。任何天氣都能進行的活動，不會太貴。技術天花板很高但入門門檻很低。人們有客製化的工具箱、專業裝備、迷信，還有對<a href="https://zh.wikipedia.org/wiki/%E7%BE%85%E6%B0%8F%E6%B2%BC%E8%9D%A6">泰國蝦</a>近乎親密的了解。</p>
+
+                    <p>我剛到台北時，住在新北市很遠的朋友家。我經常去附近一家釣蝦場，幾週後交了一些當地朋友，學會了釣蝦相關的詞彙，也漸漸上手了。調整釣竿測水線、穿餌——這需要令人驚訝的靈巧度。但大部分時間，我就是喝啤酒、抽菸，盡可能吸收中文，又不想當壁花。一兩年後，隨著我搬往台北市區、投入更文青的追求、試圖更認真對待職業，我們漸漸失去了聯繫。</p>
+
+                    <p>我曾短暫考慮過在美國開一家釣蝦場，儘管我沒有資金，想像力遠遠超過具體的商業計劃。責任問題、蝦的來源，還有一長串其他限制很快就打消了我的念頭。不過，我認為某種高端或創新的釣蝦概念在中國或台北可能行得通。台灣現有的釣蝦場大多藏在低租金的倉庫裡，裡面堆滿了亂七八糟的管線和幫浦，還有外星球般令人卻步的氣味。</p>
+
+                    <p>父親們帶孩子來學習耐心、謹慎，也許還有鉤到、烤熟、吃掉活物的刺激感。對城市裡的台灣人來說，殺掉自己要吃的東西並不是常見的經歷，所以與活物搏鬥然後宰殺的行為感覺像是一次重要且具體的現實接觸。</p>
+
+                    <p>我在天母住的時候最美好的回憶之一，就是騎上我的機車，在一個清爽的秋日早晨沿著<a href="https://zh.wikipedia.org/wiki/%E9%99%BD%E6%98%8E%E5%B1%B1">陽明山</a>的山坡往上騎，騎著我的 <a href="https://duckduckgo.com/?q=KTR+150+motorcycle+wikipedia&ia=images&iax=images">KTR-150</a>，曬曬太陽，在尼古丁和<a href="https://zh.wikipedia.org/wiki/%E5%8D%97%E4%BA%9E%E9%A3%9F%E5%93%81">維他露</a>的浸潤中消磨兩個小時，順便釣幾隻蝦。</p>
+
+                    <p>如果我無法讓世界變得更好，只能在晚期資本主義的壓力下實現自給自足，我希望第三次世界大戰永遠不要發生。我希望至少能在台灣鄉下有個小小的退休生活，唱唱卡拉OK、釣釣蝦、從事藝術創作。</p>
+
+                    <div class="shrimp-photos" style="margin-top: 20px;">
+                        <img src="https://i.ibb.co/twbkzpSG/FB-IMG-1591710056781.jpg" alt="釣蝦照片 1" style="width: 100%; height: auto; display: block; margin-bottom: 15px; border: 2px solid #444; border-radius: 8px;">
+                        <img src="https://i.ibb.co/Hwjvn8R/FB-IMG-1595373844970.jpg" alt="釣蝦照片 2" style="width: 100%; height: auto; display: block; border: 2px solid #444; border-radius: 8px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-post" id="luzon-loop">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#luzon-loop" style="text-decoration: none; color: inherit;">琴酒、鏽蝕，以及離開亞洲</a></div>
+                        <div class="post-date">2026年1月21日</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">Budots Dance Mix Vol. 4</span>
+                                    <span class="audio-track-text" aria-hidden="true">Budots Dance Mix Vol. 4</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_4" preload="metadata">
+                                <source src="/music/budots.mp3" type="audio/mpeg">
+                                您的瀏覽器不支援音訊元素。
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>2025 年很忙碌。我在東南亞各地奔波，邊工作邊旅行。最後一趟是和我的台灣好兄弟們去菲律賓。這是我即將搬回美國前的最後狂歡。</p>
+
+                    <p>我的運氣好壞參半。2024 年和這群人的上一次度假完全靠骰寶贏來的錢支付，但這次百家樂桌上的連續背運扳平了比分。</p>
+
+                    <p>馬尼拉對我來說依然是個混亂的地方。我還沒找到任何吸引我的理由。安赫萊斯市的名聲同樣名副其實。那裡有一種頹廢的魅力，就像雷諾的頂樓套房。這些天我對貧窮和剝削太敏感了，待不超過一兩天。</p>
+
+                    <p>光是呂宋島北部三分之一的面積就能輕鬆裝下整個台灣，它比想像中大得多。我不介意坐吉普尼，但如果不租私家車，我們的行程時間會翻倍。我們在三描禮士省的度假村很樸素：幾間房、一個酒吧、一個面向南海的游泳池，全由一個熱情好客的當地家庭經營。海灘不是特別乾淨，但在這裡，沒有持續維護和上游廢棄物控制，完全乾淨的海灘是不可能的。不過，菲律賓的城市環境與台灣有種我喜歡的相似感，只是更誇張。陽光下烘烤的零星綠意和海灘生活，酸雨痕跡和鏽蝕與沙子和水泥的灰階形成對比。</p>
+
+                    <p>一晚喝了致命的當地琴酒，和新朋友在海邊跳 Budots 舞之後，隔天我承受了極度的宿醉。在那痛苦的時刻，我確信我需要拉開在亞洲的降落傘，盡快回美國。我看到了牆上的字：我在台灣的時光暫時必須告一段落。</p>
+
+                    <p>我搬到科羅拉多州住了大約五個月，然後來了個 180 度大轉彎。</p>
+
+                    <p>住在美國的小公寓裡就是不適合我。雖然科羅拉多的自然美景無可否認，我也找到了一些社群，但那裡從未給我長期家園的感覺。我的腦子和演算法不斷餵給我一百萬個觸手可及卻又遙不可及的未來，而那些都不涉及丹佛都會區。我也發現自己對科技業有點倦怠，儘管這個行業正在發生令人興奮的世代轉變，比如各種產品和開發週期的扁平化、注意力和增長遊戲、資本取得等等。</p>
+
+                    <p>所以，我計劃今年冬天回呂宋島進行一次健康之旅。我已經無法摸到自己的腳趾這件事讓我很不爽。我正在大幅削減開支，並承諾進行徒手健身、瑜伽、自然運動和游泳的訓練。我計劃過更慢的生活，目標是（基本上）離線幾個月。</p>
+
+                    <p>我會專注於自我提升，看看這段內省期間是否會出現新的職業方向。根據結果，我可能會再次萌生冒險的衝動，或者全心投入新的職業。</p>
+                </div>
+            </div>
+
+            <div class="blog-post" id="tech-labor-career">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#tech-labor-career" style="text-decoration: none; color: inherit;">科技、勞動、職業</a></div>
+                        <div class="post-date">2026年1月20日</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">Charley Crockett - $10 Cowboy</span>
+                                    <span class="audio-track-text" aria-hidden="true">Charley Crockett - $10 Cowboy</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_3" preload="metadata">
+                                <source src="/music/10-dollar-cowboy.mp3" type="audio/mpeg">
+                                您的瀏覽器不支援音訊元素。
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>在台灣擁有開放式工作許可是一種罕見的自由。不像綁定特定雇主的 ARC 或學生簽證那麼受限，我有合法的許可做幾乎任何事情。</p>
+
+                    <p>最近，我一直在權衡兩條非常不同的道路。一方面，我考慮做一份最低薪資的承包工作，學習最終自己翻修房子所需的實務技能。另一方面，我想過去麥當勞工作——部分是為了好玩，但主要是因為我真的很享受體力勞動。相比在咖啡店裡對著筆電的消毒隔離，與人在真實世界中並肩工作有某種更直接、更人性化的感覺。</p>
+
+                    <p>我一直都是通才。我喜歡弄髒雙手、精通一門技藝，然後轉向下一個挑戰。這是好是壞還有待觀察。雖然我還在申請科技職位，但目前的市場很慘淡。我的興趣在於加密貨幣、犯罪和隱私的交叉點——執法部門與不良行為者之間永恆的貓捉老鼠遊戲。作為非技術人員從零開始進入這個領域是一項艱鉅的任務，但我已經準備好探索這個挑戰。</p>
+
+                    <p>從邏輯上講，應該加倍投入 AI 驅動的工作流程。像 Bolt.new 這樣的「氛圍編碼」平台很有用，我也喜歡嘗試 n8n。然而，我有一個個人底線：我無法讓自己用生成式 AI 來做「快速致富」的副業。那感覺很空洞，近乎不道德。</p>
+
+                    <p>我們生活在一個創業成本急劇下降、而注意力成本卻急劇上升的時代。在這種環境下，我傾向於接受 Z 世代和 Alpha 世代「就是去做事」的心態，而不是依賴冗長的履歷來敲門。</p>
+
+                    <p>除了我積壓的非營利點子和利基台灣物聯網產品之外，我還在關注反洗錢（AML）、機器人技術，甚至「反科技」產業。即使這些大膽嘗試都沒有成功，我也很滿足於知道我總是能養活自己，同時對一群台灣孩子的課堂產生正面影響。</p>
+
+                    <p><strong>我目前正在思考的概念：</strong></p>
+                    <ul>
+                        <li>政府問責即服務</li>
+                        <li>個人數據主權基礎設施</li>
+                        <li>數據投毒即服務（保護隱私）</li>
+                        <li>民主化和降低隱私基礎設施風險（I2P/TOR）</li>
+                        <li>遊戲化公民參與和社區即插即用應用程式</li>
+                        <li>工會化即服務</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="blog-post" id="chinese-learning">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#chinese-learning" style="text-decoration: none; color: inherit;">我的中文學習之旅</a></div>
+                        <div class="post-date">2026年1月20日</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">Cashmoon</span>
+                                    <span class="audio-track-text" aria-hidden="true">Cashmoon</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_2" preload="metadata">
+                                <source src="/music/cashmoon.mp4" type="audio/mp4">
+                                您的瀏覽器不支援音訊元素。
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>你遇見我的時候，正是我人生中非常「中文」的時期。</p>
+                    <p>雖然我絕不是母語人士，但我已經透過自學和完全沉浸達到了 HSK 5 的水平。在我看來——儘管普遍認為——中文客觀上是一門容易學習的語言。語法比大多數語言簡單得多。由於我 99% 的時間都在說話或用手機打字，過去十年裡只有三次我真的希望自己能手寫台灣使用的複雜繁體書法。</p>
+                    <p>雖然西班牙語無疑很美，但我發現要突破大學程度更難。在即時對話中不斷變化動詞所需的心理負荷比中文更累人。</p>
+
+                    <h3>我進步的三大支柱</h3>
+                    <ol>
+                        <li><strong>被動沉浸：</strong>我花了大約兩年時間聽人們「嘰嘰喳喳」而完全聽不懂，才能真正聽出台灣國語的聲調和細微差別。</li>
+                        <li><strong>主動使用：</strong>你必須和人交談、犯錯，把自己置於不舒服的情境中，迫使自己回想和記憶。</li>
+                        <li><strong>「書本學習」陷阱：</strong>我背過數千個單字，結果因為從未使用而忘記了。如果詞彙不適用於你的日常生活（購物、人際關係、食物等），死記硬背的回報會遞減。</li>
+                    </ol>
+
+                    <p>學中文並沒有成為我當初在波特蘭開始這趟旅程時期望的「金雞母」——讓我當上 Curtis 環球貿易公司的執行長——但它給了我三樣東西：</p>
+                    <ul>
+                         <li>履歷上令人印象深刻的一行。</li>
+                         <li>大多數人無法獲得的豐富人生經歷。</li>
+                         <li>一個很酷的派對把戲。</li>
+                    </ul>
+
+                    <h3>工具</h3>
+                    <ul>
+                        <li><strong>Hack Chinese：</strong>一個追蹤你詞彙量確切位置的絕佳工具。</li>
+                        <li><strong>Pleco：</strong>最好的字典 App。使用閃卡附加功能隨時隨地學習。</li>
+                        <li><strong>實體便利貼：</strong>我以前會把便利貼貼在浴室玻璃外面。大聲說出完整的句子並模擬情境，讓記憶變得「黏」。市面上有數萬個漢字，它們很容易左耳進右耳出。</li>
+                        <li><strong>現代教科書：</strong>任何當代教材都可以。只要確保它專注於你計劃沉浸的地區（中國大陸 vs. 台灣），因為詞彙和發音略有不同。</li>
+                    </ul>
+
+                    <h3>語言學習的未來</h3>
+                    <p>我對語言學習的未來非常感興趣，特別是 AI 翻譯軟體和硬體。對於有自學動力的學習者來說，現在是親自動手使用 AI 的好時機，讓你的工作流程易於追蹤、管理和擴展。（像<a href="https://github.com/joshp123/xuezh" target="_blank">這個 repo</a>，你可以連接到 OpenClaw 或其他 LLM。）</p>
+
+                    <p>總的來說，我的理念是你需要弄髒雙手、犯錯、付出努力。話雖如此，透過項鏈或耳塞實現科幻級別的即時完美翻譯可能只需要幾年時間。（這假設我們有足夠的高品質數據來訓練和改進這些模型。）</p>
+                </div>
+            </div>
+
+            <div class="blog-post" id="new-website">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#new-website" style="text-decoration: none; color: inherit;">新網站上線</a></div>
+                        <div class="post-date">2026年1月13日</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">invention - trillium</span>
+                                    <span class="audio-track-text" aria-hidden="true">invention - trillium</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_1" preload="metadata">
+                                <source src="/music/trillium.mp3" type="audio/mpeg">
+                                您的瀏覽器不支援音訊元素。
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>歡迎來到新網站！這是一個更慢節奏的空間，遠離演算法，分享更有意義的內容。</p>
+                    <p>我一直在建立這個空間，作為記錄想法、分享藝術和以更有意圖的方式與人聯繫的地方。沒有讚數，沒有動態消息，只有內容。</p>
+                    <p>現在我需要慢慢上傳所有舊作品、繼續寫作、保持創意源源不絕⋯⋯</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function formatAudioTime(time) {
+            if (!isFinite(time)) {
+                return '0:00';
+            }
+            var minutes = Math.floor(time / 60);
+            var seconds = Math.floor(time % 60);
+            return minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+        }
+
+        function updateAudioPlayer(player, audio) {
+            var fill = player.querySelector('.audio-progress-fill');
+            var timeDisplay = player.querySelector('.audio-time');
+            var progress = 0;
+            if (audio.duration && isFinite(audio.duration)) {
+                progress = audio.currentTime / audio.duration;
+            }
+            if (fill) {
+                fill.style.width = (progress * 100) + '%';
+            }
+            if (timeDisplay) {
+                timeDisplay.textContent = formatAudioTime(audio.currentTime);
+            }
+        }
+
+        function syncAudioToggle(player, audio) {
+            var toggle = player.querySelector('.audio-toggle');
+            if (toggle) {
+                toggle.textContent = audio.paused ? 'play' : 'pause';
+            }
+        }
+
+        function updateVolumeControl(player, audio) {
+            var volumeFill = player.querySelector('.audio-volume-fill');
+            if (volumeFill) {
+                volumeFill.style.width = Math.round(audio.volume * 100) + '%';
+            }
+        }
+
+        function pauseOtherAudios(currentAudio) {
+            document.querySelectorAll('.audio-player audio').forEach(function(otherAudio) {
+                if (otherAudio !== currentAudio && !otherAudio.paused) {
+                    otherAudio.pause();
+                }
+            });
+        }
+
+        document.querySelectorAll('.audio-player').forEach(function(player) {
+            var audio = player.querySelector('audio');
+            if (!audio) {
+                return;
+            }
+
+            var toggle = player.querySelector('.audio-toggle');
+            var progress = player.querySelector('.audio-progress');
+            var volumeControl = player.querySelector('.audio-volume');
+            var volume = parseFloat(player.getAttribute('data-volume'));
+
+            if (!isNaN(volume)) {
+                audio.volume = volume;
+            }
+
+            if (toggle) {
+                toggle.addEventListener('click', function() {
+                    if (audio.paused) {
+                        pauseOtherAudios(audio);
+                        audio.play();
+                    } else {
+                        audio.pause();
+                    }
+                });
+            }
+
+            if (progress) {
+                progress.addEventListener('click', function(event) {
+                    if (!audio.duration || !isFinite(audio.duration)) {
+                        return;
+                    }
+                    var rect = progress.getBoundingClientRect();
+                    var percent = (event.clientX - rect.left) / rect.width;
+                    percent = Math.min(1, Math.max(0, percent));
+                    audio.currentTime = percent * audio.duration;
+                });
+            }
+
+            if (volumeControl) {
+                volumeControl.addEventListener('click', function(event) {
+                    var rect = volumeControl.getBoundingClientRect();
+                    var percent = (event.clientX - rect.left) / rect.width;
+                    percent = Math.min(Math.max(percent, 0), 1);
+                    audio.volume = percent;
+                    updateVolumeControl(player, audio);
+                });
+            }
+
+            audio.addEventListener('timeupdate', function() {
+                updateAudioPlayer(player, audio);
+            });
+
+            audio.addEventListener('loadedmetadata', function() {
+                updateAudioPlayer(player, audio);
+            });
+
+            audio.addEventListener('play', function() {
+                pauseOtherAudios(audio);
+                syncAudioToggle(player, audio);
+            });
+
+            audio.addEventListener('pause', function() {
+                syncAudioToggle(player, audio);
+            });
+
+            audio.addEventListener('ended', function() {
+                syncAudioToggle(player, audio);
+            });
+
+            audio.addEventListener('error', function() {
+                console.warn('Audio failed to load:', audio.querySelector('source')?.src);
+                var parent = audio.closest('.post-music');
+                if (parent) {
+                    var errorMsg = document.createElement('div');
+                    errorMsg.style.cssText = 'color: #000; font-size: 11px; margin-top: 4px; letter-spacing: 0.3px;';
+                    errorMsg.textContent = '音訊無法載入 - 外部來源可能被阻擋';
+                    parent.appendChild(errorMsg);
+                }
+            });
+
+            syncAudioToggle(player, audio);
+            updateVolumeControl(player, audio);
+            updateAudioPlayer(player, audio);
+            audio.load();
+        });
+
+        function toggleShrimpPhotos() {
+            const gallery = document.getElementById('shrimpGallery');
+            if (gallery.classList.contains('active')) {
+                gallery.style.opacity = '0';
+                setTimeout(() => {
+                    gallery.classList.remove('active');
+                }, 500);
+            } else {
+                gallery.classList.add('active');
+                setTimeout(() => {
+                    gallery.style.opacity = '1';
+                }, 10);
+            }
+        }
+    </script>
+</body>
+
+</html>

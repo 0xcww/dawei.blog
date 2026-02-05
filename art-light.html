@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-Equiv="Cache-Control" Content="no-cache" />
+    <meta http-Equiv="Pragma" Content="no-cache" />
+    <meta http-Equiv="Expires" Content="0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CW | 小魏</title>
+    <meta name="description" content="This is a corner for myself.">
+    <link href="art/galleriastyle.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: light)">
+    <link href="art/galleriastyle-dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)">
+    <link href="art/galleriastyle.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="images/shrimp_favicon_white.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" href="images/shrimp_favicon_dark.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" href="images/shrimp_favicon_white.png" />
+
+    <script>
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            var computedDisplay = window.getComputedStyle(section).display;
+            if (computedDisplay === 'none') {
+                section.style.display = 'block';
+                section.style.height = 'auto';
+            } else {
+                section.style.display = 'none';
+                section.style.height = '0';
+            }
+        }
+
+        function loadContent(url, event) {
+            if (event) event.preventDefault();
+            const contentArea = document.getElementById('content-area');
+
+            // Remove any previously injected styles/scripts from other content pages
+            document.querySelectorAll('style[data-content-style], link[data-content-link], script[data-content-script]').forEach(el => el.remove());
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    // Extract and inject styles from the loaded page's head
+                    const styles = doc.querySelectorAll('head style');
+                    styles.forEach(style => {
+                        const newStyle = document.createElement('style');
+                        newStyle.textContent = style.textContent;
+                        newStyle.setAttribute('data-content-style', 'true');
+                        document.head.appendChild(newStyle);
+                    });
+
+                    // Extract and inject stylesheet links from the loaded page's head
+                    const links = doc.querySelectorAll('head link[rel~="stylesheet"]');
+                    links.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (!href) return;
+                        if (href.includes('iframe.css') || href.includes('iframe-dark.css')) return;
+                        const newLink = document.createElement('link');
+                        newLink.rel = link.getAttribute('rel') || 'stylesheet';
+                        newLink.href = new URL(href, url).href;
+                        if (link.media) {
+                            newLink.media = link.media;
+                        }
+                        newLink.setAttribute('data-content-link', 'true');
+                        document.head.appendChild(newLink);
+                    });
+
+                    const bodyContent = doc.querySelector('.area') || doc.body;
+
+                    // Also include any lightbox elements that are outside .area
+                    const lightbox = doc.querySelector('.lightbox');
+                    let lightboxHTML = '';
+                    if (lightbox) {
+                        lightboxHTML = lightbox.outerHTML;
+                    }
+
+                    contentArea.innerHTML = bodyContent.innerHTML + lightboxHTML;
+
+                    // Initialize lazy loading for images with data-src using content-area as root
+                    initLazyLoading(contentArea);
+
+                    // Initialize lightbox functionality
+                    initLightbox(contentArea);
+
+                    // Re-run embeds/scripts that don't execute via innerHTML
+                    const scripts = doc.querySelectorAll('script[src]');
+                    scripts.forEach(script => {
+                        const src = script.getAttribute('src');
+                        if (!src) return;
+                        const newScript = document.createElement('script');
+                        newScript.src = new URL(src, url).href;
+                        if (script.async) newScript.async = true;
+                        if (script.defer) newScript.defer = true;
+                        newScript.setAttribute('data-content-script', 'true');
+                        document.body.appendChild(newScript);
+                    });
+
+                    const hasInstagramEmbeds = !!contentArea.querySelector('.instagram-media');
+                    if (hasInstagramEmbeds) {
+                        const processEmbeds = () => {
+                            if (window.instgrm && window.instgrm.Embeds && window.instgrm.Embeds.process) {
+                                window.instgrm.Embeds.process();
+                            }
+                        };
+                        if (window.instgrm && window.instgrm.Embeds) {
+                            processEmbeds();
+                        } else {
+                            let igScript = document.querySelector('script[src*="instagram.com/embed.js"]');
+                            if (!igScript) {
+                                igScript = document.createElement('script');
+                                igScript.src = 'https://www.instagram.com/embed.js';
+                                igScript.async = true;
+                                igScript.defer = true;
+                                igScript.setAttribute('data-content-script', 'true');
+                                igScript.onload = processEmbeds;
+                                document.body.appendChild(igScript);
+                            } else {
+                                igScript.addEventListener('load', processEmbeds, { once: true });
+                            }
+                        }
+                    }
+
+                    contentArea.scrollTop = 0;
+                })
+                .catch(error => {
+                    console.error('Error loading content:', error);
+                    contentArea.innerHTML = '<div style="padding: 20px; text-align: center;">Error loading content. Please try again.</div>';
+                });
+        }
+
+        function initLazyLoading(container) {
+            const lazyImages = container.querySelectorAll('img[data-src]');
+            if (lazyImages.length === 0) return;
+
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.add('loaded');
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                root: container,
+                rootMargin: '50px'
+            });
+
+            lazyImages.forEach(img => imageObserver.observe(img));
+        }
+
+        function initLightbox(container) {
+            const lightbox = container.querySelector('.lightbox');
+            if (!lightbox) return;
+
+            const lightboxImg = lightbox.querySelector('.lightbox-content');
+            const lightboxClose = lightbox.querySelector('.lightbox-close');
+            const lightboxPrev = lightbox.querySelector('.lightbox-prev');
+            const lightboxNext = lightbox.querySelector('.lightbox-next');
+
+            let currentImageIndex = 0;
+            let allImages = [];
+
+            function showLightbox(src) {
+                lightboxImg.src = src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            function showNextImage() {
+                currentImageIndex = (currentImageIndex + 1) % allImages.length;
+                lightboxImg.src = allImages[currentImageIndex].src;
+            }
+
+            function showPrevImage() {
+                currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+                lightboxImg.src = allImages[currentImageIndex].src;
+            }
+
+            container.addEventListener('click', (e) => {
+                if (e.target.matches('.photo-grid img')) {
+                    allImages = Array.from(container.querySelectorAll('.photo-grid img'));
+                    currentImageIndex = allImages.indexOf(e.target);
+                    showLightbox(e.target.src);
+                }
+            });
+
+            if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+            if (lightboxNext) lightboxNext.addEventListener('click', showNextImage);
+            if (lightboxPrev) lightboxPrev.addEventListener('click', showPrevImage);
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') showNextImage();
+                if (e.key === 'ArrowLeft') showPrevImage();
+            });
+        }
+    </script>
+    <style>
+        #content-area {
+            overflow-y: auto;
+            height: 100%;
+            background-color: white;
+            /* iframe.css styles for loaded content */
+            font-family: ms pgothic;
+            text-shadow: 0 0 0px, 0 0 3px grey;
+            font-size: 15px;
+            line-height: 17px;
+        }
+        #content-area,
+        #content-area * {
+            font-family: ms pgothic;
+            text-shadow: 0 0 0px, 0 0 3px grey;
+        }
+        #content-area .area {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: white;
+        }
+        #content-area .subject {
+            width: auto;
+            max-width: 1200px;
+            box-sizing: border-box;
+            padding: 30px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin: 0 auto;
+        }
+        #content-area .subject p {
+            max-width: 700px;
+        }
+        #content-area .photo-grid {
+            max-width: 100%;
+        }
+        #content-area a {
+            text-decoration: underline;
+            color: black;
+        }
+        #content-area a:hover {
+            text-decoration: underline;
+            color: black;
+        }
+        .default-content {
+            text-align: center;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .default-content p {
+            font-size: 18px;
+            font-family: ms gothic;
+            margin-bottom: 10px;
+        }
+        .default-content img {
+            max-width: 100%;
+            height: auto;
+            filter: grayscale(100%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+
+    </div>
+    <div class="corn">
+
+        <div class="sidenav" style="font-size:13px;  font-family: ms gothic; ">
+            <img src="images/teatima.gif" style="padding:15px;">
+
+            <div class="tableof2" onclick="toggleSection('design-section')" style="cursor: pointer;">
+                <b>DESIGN</b>
+            </div>
+            <div id="design-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/design/xiao-wei-tshirt-light.html" onclick="loadContent(this.href, event)">Xiao Wei Tshirt</a>
+                </div>
+                <div class="nav">
+                    <a href="art/design/3d-lollipops-light.html" onclick="loadContent(this.href, event)">3D Lollipops</a>
+                </div>
+            </div>
+
+            <div class="tableof3" onclick="toggleSection('video-section')" style="cursor: pointer;">
+                <b>VIDEO</b>
+            </div>
+            <div id="video-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/video/aesthetic-mini-mvs-light.html" onclick="loadContent(this.href, event)">Aesthetic mini MVs</a>
+                </div>
+            </div>
+
+            <div class="tableof5" onclick="toggleSection('social-section')" style="cursor: pointer;">
+                <b>SOCIAL</b>
+            </div>
+            <div id="social-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/social/social-campaigns-light.html" onclick="loadContent(this.href, event)">Social Campaigns</a>
+                </div>
+            </div>
+
+            <div class="tableof" onclick="toggleSection('writing-section')" style="cursor: pointer;">
+                <b>WRITING</b>
+            </div>
+            <div id="writing-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/writing/host-club-light.html" onclick="loadContent(this.href, event)">Host Club & Taiwan 8+9</a>
+                </div>
+            </div>
+
+            <div class="tableof4" onclick="toggleSection('misc-section')" style="cursor: pointer;">
+                <b>MISC</b>
+            </div>
+            <div id="misc-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/misc/taiwan-motorcycle-trip-light.html" onclick="loadContent(this.href, event)">Taiwan motorcycle trip</a>
+                </div>
+                <div class="nav">
+                    <a href="art/misc/tainan-saba-boy-light.html" onclick="loadContent(this.href, event)">Tainan City w/ Saba Boy</a>
+                </div>
+            </div>
+
+            <div class="tableof-button">
+                <a href="/index.html">HOME</a>
+            </div>
+        </div>
+
+        <div class="main">
+            <div id="content-area">
+                <div class="default-content">
+                    <p>Pick a post<br>挑篇文章</p>
+                    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXAyMmZ5ZWdlenEzdjNtc3NrMXI0NW9qb3h1bm5xaWVxbXV3cGVobyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/oz45ELYgMoYVsZqmor/giphy.gif" alt="Bongo Cat">
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+</body>
+</html>

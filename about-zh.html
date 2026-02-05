@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="這是屬於我自己的小角落。">
+    <link href="/iframe-dark.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="icon" type="image/png">
+    <style>
+        .camera-button {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .camera-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .camera-button svg {
+            width: 100%;
+            height: 100%;
+            fill: #ccc;
+            transition: fill 0.3s ease;
+        }
+
+        .camera-button:hover svg {
+            fill: #fff;
+        }
+
+        .photo-gallery {
+            display: none;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .photo-gallery.active {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            opacity: 1;
+        }
+
+        .photo-gallery img {
+            width: 100%;
+            height: auto;
+            border: 2px solid #444;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-gallery img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+            <center>
+                <h3>關於我</h3>
+            </center>
+<br>
+
+            嗨，我叫 Curtis。我目前正處於人生的十字路口，暫時放慢腳步（<a href="https://en.wikipedia.org/wiki/Tang_ping">躺平</a>）。<br><br>
+            2026 年我的一個主要目標是找到一個能夠自給自足的利他型專案。<br><br>
+
+我喜歡擁有廣泛的工作經驗。我做過各種體力勞動和服務業，在台灣科技業工作過，最近則是在一些 web3 和 AI 新創公司。 <br><br>
+
+我來自俄勒岡州，但在台灣住了很長一段時間。 <br>
+我有一隻大隻的白色蓬鬆貓。 <br>
+我的中文還不錯。<br>
+我喜歡做飯和唱卡拉OK。
+
+            <br><br>
+
+            <center>
+                <h3>簡歷</h3>
+            </center>
+            <br>
+
+            <b>The Invention Network</b> - 丹佛，科羅拉多州<br>
+            <i>社群主管</i> | 2025年 - 2026年<br><br>
+            建立新的社群平台和社交計劃。<br><br>
+            與頂尖 web3 機構合作，規劃產品和領導團隊之間的增長飛輪。<br><br>
+            使用 n8n 為各種工作流程創建和調整 AI 自動化。<br><br>
+            在所有渠道製作引人入勝且易讀的 GTM 計劃內容。<br><br><br><br>
+
+            <b>Eigen Labs</b> - 遠端<br>
+            <i>支援與社群經理</i> | 2024年 - 2025年<br><br>
+            負責設計和迭代代幣化計劃、社交行銷活動和競賽，直接推動 EigenLayer 的用戶參與和產品採用。<br><br>
+            領導實驗室和基金會實體的整體社群策略和訊息傳遞，同時重組社群 Discord 以主導教育和互動活動。<br><br>
+            創建、擁有並改進為質押者、節點營運商、CEX、DEX 和 web3 基礎設施客戶提供的高度技術性支援系統，將回應指標和 CSAT 提升了數個量級。<br><br>
+            利用 Chainalysis 偵測和緩解欺詐性和高風險的區塊鏈活動，確保監管合規。<br><br>
+            管理 1 名內部支援工程師以及 10 家行銷代理商供應商和版主。<br><br><br><br>
+
+            <b>Rio Network</b> - 遠端<br>
+            <i>社群經理</i> | 2023年 - 2024年<br><br>
+            領導為流動性再質押代幣創建端到端社群策略和支援基礎設施，服務投資者、節點營運商和 dApp 用戶。<br><br>
+            在關鍵啟動階段建立基礎社群空間和計劃，以促進倡導和支援採用。<br><br><br><br>
+
+            <b>台北區塊鏈週</b> - 台灣台北<br>
+            <i>社交媒體經理</i> | 2023年 - 2024年<br><br>
+            志願領導台灣本地區塊鏈活動的社交媒體工作。<br><br><br><br>
+
+            <b>BLKSODA</b> - 台灣台北<br>
+            <i>內容創作者</i> | 2023年 - 2024年<br><br>
+            為台灣各 PC 零組件公司創作直式影片和攝影內容。<br><br><br><br>
+
+            <b>Bitski</b> - 舊金山，加州<br>
+            <i>社群與支援經理</i> | 2021年 - 2023年<br><br>
+            設計並執行社交內容、品牌和網紅活動，使公司的 Twitter 新增超過 15,000 名粉絲，讓用戶成為品牌擁護者。<br><br>
+            使用 Asana、Typeform 和 Discord 實施從測試版測試者到 Bitski 開發人員的白手套 UI/UX 回饋循環，確保社群見解直接影響產品迭代。<br><br>
+            撰寫了一百多篇涵蓋法幣、加密貨幣和 NFT 產品的支援文章。<br><br>
+            管理 Zendesk 工單並向產品團隊提供定期分析報告，定義關鍵成功指標。<br><br><br><br>
+
+            <b>Myria</b> - 遠端<br>
+            <i>社交行銷經理</i> | 2022年 - 2022年<br><br>
+            為 web3 遊戲標題和 zk-STARK L2 創建社交和行銷活動，在一個月內將參與度翻倍，同時透過 Twitter、Discord、Telegram 和 Instagram 發布產品公告。<br><br>
+            使用 Confluence、公開社交指標和鏈上數據準備區塊鏈遊戲市場和競爭對手的定性競爭分析報告。<br><br><br><br>
+
+            <b>華碩（玩家共和國）</b> - 台灣台北<br>
+            <i>全球社交媒體經理</i> | 2018年 - 2021年<br><br>
+            管理五個社交平台，總共擁有 1200 萬粉絲。<br><br>
+            將 ROG Instagram 頁面從 20 萬粉絲增長到 260 萬粉絲，同時產生數百萬次連結點擊、頁面瀏覽等。<br><br>
+            為發燒友 PC 硬體創建品牌範圍的產品和社交策略，同時與本地團隊密切合作執行。<br><br>
+            與產品行銷團隊合作指導品牌和內容創作，以增加可交付成果的產出，同時節省設計師時間。<br><br>
+            在 COMPUTEX、Gamescom 和其他貿易展或直播等大型活動期間負責超過 20 萬美元的社交廣告付費媒體。<br><br><br><br>
+
+            <b>華碩（玩家共和國）</b> - 台灣台北<br>
+            <i>全球社交媒體專員</i> | 2017年 - 2018年<br><br>
+            使用 Photoshop、Premiere 和攝影為遊戲受眾創建社交內容。<br><br>
+            使用 Excel、Social Bakers、Sprinklr 和其他工具管理內容規劃和分析。<br><br>
+            為 AI 網狀無線路由器產品撰寫技術媒體評論指南。<br><br><br><br>
+
+            <b>ADAM elements</b> - 台灣台北<br>
+            <i>數位行銷專員</i> | 2016年 - 2017年<br><br>
+            管理第三方 iOS 配件的推廣計劃，包括新聞稿、社交媒體、渠道合作夥伴和本地零售團隊。<br><br>
+            使用 Mailchimp 執行電子郵件行銷活動，並以高投資報酬率執行 Facebook 廣告。<br><br>
+            創建串流和視覺內容，協助貿易展。<br><br><br><br>
+
+            <b>Health Goth</b> - 波特蘭，俄勒岡州<br>
+            <i>內容策展人</i> | 2014年 - 2017年<br><br>
+            與朋友一起將美學時尚部落格從 0 增長到 36,000 名粉絲，影響了世界各地的現代時尚。<br><br>
+
+            <center>
+                <h3>志願服務</h3>
+                <span class="camera-button" onclick="togglePhotos()" title="點擊查看照片">
+                    <svg id="retro-camera" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="m22,3v-1H2v1h-1v18h1v1h20v-1h1V3h-1ZM3,4h6v1H3v-1Zm7,16H3v-10h7v1h-2v2h-1v4h1v2h2v1Zm-1-3v-4h1v-1h4v1h1v4h-1v1h-4v-1h-1Zm12,3h-7v-1h2v-2h1v-4h-1v-2h-2v-1h7v10Zm0-12H3v-1h6v-1h1v-1h1v-1h10v4Z"/>
+                        <polygon points="13 13 13 14 11 14 11 16 10 16 10 13 13 13"/>
+                    </svg>
+                </span>
+            </center>
+
+            <div id="photoGallery" class="photo-gallery">
+                <img src="https://i.ibb.co/vCbS0cTJ/volunteering.jpg" alt="志願服務照片 1">
+                <img src="images/screenshot_2026-01-13_at_3.59.26_pm.png" alt="志願服務照片 2">
+                <img src="https://i.ibb.co/XZwTDMBh/18029076571468899.jpg" alt="志願服務照片 3">
+                <img src="images/screenshot_2026-01-13_at_3.59.57_pm.png" alt="志願服務照片 4">
+            </div>
+
+            <br>
+            <br><b>SOLV Oregon</b> - 波特蘭，俄勒岡州<br>
+            2023年 - 2025年<br>
+            每次回家都會參加波特蘭市中心的垃圾清理活動。<br><br>
+
+              <br><b>Portland Homeless Family Solutions</b> - 波特蘭，俄勒岡州<br>
+            2011年 - 2013年<br>
+            每隔幾週志願在波特蘭市中心的一個小型收容所過夜，為流離失所的家庭提供幫助。<br><br>
+
+        </div>
+    </div>
+
+    <script>
+        function togglePhotos() {
+            const gallery = document.getElementById('photoGallery');
+            if (gallery.classList.contains('active')) {
+                gallery.style.opacity = '0';
+                setTimeout(() => {
+                    gallery.classList.remove('active');
+                }, 500);
+            } else {
+                gallery.classList.add('active');
+                setTimeout(() => {
+                    gallery.style.opacity = '1';
+                }, 10);
+            }
+        }
+    </script>
+</body>
+
+</html>

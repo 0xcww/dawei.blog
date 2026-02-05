@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/iframe-dark.css" rel="stylesheet" type="text/css" media="all">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: ms gothic, monospace;
+            padding: 20px;
+            background-color: #000;
+            color: white;
+        }
+
+        h2 {
+            font-family: ms pgothic;
+            text-align: center;
+            border-bottom: 2px solid white;
+            padding-bottom: 10px;
+        }
+
+        .form-container {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border: 1px solid white;
+            margin-bottom: 30px;
+            box-shadow: 4px 4px 5px #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid white;
+            font-family: ms gothic, monospace;
+            box-sizing: border-box;
+            background-color: #000;
+            color: white;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #000;
+            border: 1px solid white;
+            padding: 10px 20px;
+            font-family: ms pgothic;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 2px 2px 3px #333;
+            color: white;
+        }
+
+        button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .entry {
+            background-color: #0a0a0a;
+            border: 1px solid white;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 2px 2px 3px #333;
+        }
+
+        .entry-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .entry-date {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .entry-message {
+            line-height: 1.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        #message-status {
+            margin-top: 10px;
+            padding: 10px;
+            display: none;
+        }
+
+        .success {
+            background-color: #1a4d2e;
+            border: 1px solid #28a745;
+            color: #90ee90;
+        }
+
+        .error {
+            background-color: #4d1a1a;
+            border: 1px solid #dc3545;
+            color: #ff9999;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>留言板</h2>
+
+    <div class="form-container">
+        <form id="guestbook-form">
+            <div class="form-group">
+                <label for="name">名字：</label>
+                <input type="text" id="name" name="name" required maxlength="50">
+            </div>
+            <div class="form-group">
+                <label for="message">訊息：</label>
+                <textarea id="message" name="message" required maxlength="500"></textarea>
+            </div>
+            <button type="submit">簽署留言板</button>
+        </form>
+        <div id="message-status"></div>
+    </div>
+
+    <div id="entries-container">
+        <div class="loading">載入中...</div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://gvggpnjxdtzwsxbwetmh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2Z2dwbmp4ZHR6d3N4YndldG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwODMzMTUsImV4cCI6MjA4MzY1OTMxNX0.j-s9IaVfw2EoTT9i686qerLMZHZqnR3AtQpVqA3R7rI';
+
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function loadEntries() {
+            const { data, error } = await supabase
+                .from('guestbook')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            const container = document.getElementById('entries-container');
+
+            if (error) {
+                container.innerHTML = '<div class="error">載入條目時出錯。請稍後再試。</div>';
+                return;
+            }
+
+            if (data.length === 0) {
+                container.innerHTML = '<div class="loading">還沒有條目。成為第一個簽名的人！</div>';
+                return;
+            }
+
+            container.innerHTML = data.map(entry => `
+                <div class="entry">
+                    <div class="entry-name">${escapeHtml(entry.name)}</div>
+                    <div class="entry-date">${new Date(entry.created_at).toLocaleString('zh-TW')}</div>
+                    <div class="entry-message">${escapeHtml(entry.message)}</div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showStatus(message, isError = false) {
+            const status = document.getElementById('message-status');
+            status.textContent = message;
+            status.className = isError ? 'error' : 'success';
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+
+        document.getElementById('guestbook-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!name || !message) {
+                showStatus('請填寫所有欄位。', true);
+                return;
+            }
+
+            const { error } = await supabase
+                .from('guestbook')
+                .insert([{ name, message }]);
+
+            if (error) {
+                showStatus('簽署留言板時出錯。請再試一次。', true);
+                return;
+            }
+
+            showStatus('感謝您簽署留言板！');
+            document.getElementById('guestbook-form').reset();
+            loadEntries();
+        });
+
+        loadEntries();
+    </script>
+</body>
+
+</html>

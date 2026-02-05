@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/iframe.css" rel="stylesheet" type="text/css" media="all">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: ms gothic, monospace;
+            padding: 20px;
+            background-color: white;
+            color: black;
+        }
+
+        h2 {
+            font-family: ms pgothic;
+            text-align: center;
+            border-bottom: 2px solid black;
+            padding-bottom: 10px;
+        }
+
+        .form-container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border: 1px solid black;
+            margin-bottom: 30px;
+            box-shadow: 4px 4px 5px grey;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid black;
+            font-family: ms gothic, monospace;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: white;
+            border: 1px solid black;
+            padding: 10px 20px;
+            font-family: ms pgothic;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 2px 2px 3px grey;
+        }
+
+        button:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .entry {
+            background-color: #f9f9f9;
+            border: 1px solid black;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 2px 2px 3px grey;
+        }
+
+        .entry-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .entry-date {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .entry-message {
+            line-height: 1.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        #message-status {
+            margin-top: 10px;
+            padding: 10px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #28a745;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>GUESTBOOK</h2>
+
+    <div class="form-container">
+        <form id="guestbook-form">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required maxlength="50">
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required maxlength="500"></textarea>
+            </div>
+            <button type="submit">Sign Guestbook</button>
+        </form>
+        <div id="message-status"></div>
+    </div>
+
+    <div id="entries-container">
+        <div class="loading">Loading entries...</div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://gvggpnjxdtzwsxbwetmh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2Z2dwbmp4ZHR6d3N4YndldG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwODMzMTUsImV4cCI6MjA4MzY1OTMxNX0.j-s9IaVfw2EoTT9i686qerLMZHZqnR3AtQpVqA3R7rI';
+
+        const { createClient } = window.supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function loadEntries() {
+            const { data, error } = await supabaseClient
+                .from('guestbook')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            const container = document.getElementById('entries-container');
+
+            if (error) {
+                container.innerHTML = '<div class="error">Error loading entries. Please try again later.</div>';
+                return;
+            }
+
+            if (data.length === 0) {
+                container.innerHTML = '<div class="loading">No entries yet. Be the first to sign!</div>';
+                return;
+            }
+
+            container.innerHTML = data.map(entry => `
+                <div class="entry">
+                    <div class="entry-name">${escapeHtml(entry.name)}</div>
+                    <div class="entry-date">${new Date(entry.created_at).toLocaleString()}</div>
+                    <div class="entry-message">${escapeHtml(entry.message)}</div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showStatus(message, isError = false) {
+            const status = document.getElementById('message-status');
+            status.textContent = message;
+            status.className = isError ? 'error' : 'success';
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+
+        document.getElementById('guestbook-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!name || !message) {
+                showStatus('Please fill in all fields.', true);
+                return;
+            }
+
+            const response = await fetch(`${SUPABASE_URL}/functions/v1/moderate-guestbook`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                },
+                body: JSON.stringify({ name, message })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || result.error) {
+                showStatus(result.error || 'Error signing guestbook. Please try again.', true);
+                return;
+            }
+
+            showStatus('Thank you for signing the guestbook!');
+            document.getElementById('guestbook-form').reset();
+            loadEntries();
+        });
+
+        loadEntries();
+    </script>
+</body>
+
+</html>

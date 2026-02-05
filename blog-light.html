@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="This is a corner for myself.">
+    <link href="/iframe.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="icon" type="image/png">
+    <style>
+        .post-header {
+            border-bottom: 2px dotted #ccc;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .post-title-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12px;
+        }
+
+        .post-date {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .post-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .post-music {
+            margin-top: 12px;
+        }
+
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            max-width: 300px;
+            padding: 6px;
+            border: 1px dotted #000;
+            background-color: #fff;
+            font-family: "MS PGothic", "ms pgothic", Georgia, serif;
+            font-size: 12px;
+            letter-spacing: 0.4px;
+            color: #000;
+            position: relative;
+            overflow: visible;
+        }
+
+        .audio-player audio {
+            display: none;
+        }
+
+        .audio-icon {
+            width: 14px;
+            height: 14px;
+            flex: 0 0 auto;
+            image-rendering: pixelated;
+        }
+
+        .audio-toggle {
+            border: 1px solid #000;
+            background-color: #fff;
+            padding: 2px 6px;
+            font-family: inherit;
+            font-size: 11px;
+            letter-spacing: 0.3px;
+            text-transform: lowercase;
+            cursor: pointer;
+        }
+
+        .audio-toggle:hover,
+        .audio-progress:hover,
+        .audio-volume:hover {
+            background-color: #f0f0f0;
+        }
+
+        .audio-progress {
+            position: relative;
+            flex: 1;
+            height: 8px;
+            border: 1px solid #000;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .audio-progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background-color: #000;
+        }
+
+        .audio-volume {
+            position: relative;
+            width: 34px;
+            height: 8px;
+            border: 1px solid #000;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .audio-volume-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background-color: #000;
+        }
+
+        .audio-time {
+            min-width: 36px;
+            font-size: 11px;
+            text-align: right;
+            font-family: Georgia, serif;
+            letter-spacing: 0.3px;
+        }
+
+        .audio-track {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 8px;
+            padding: 2px 6px;
+            max-width: 170px;
+            border: 1px dotted #000;
+            border-left: none;
+            background-color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 13px;
+            letter-spacing: 0.4px;
+        }
+
+        .audio-track-inner {
+            display: inline-flex;
+            gap: 18px;
+            white-space: nowrap;
+            animation: audio-track-scroll 9s linear infinite;
+        }
+
+        .audio-track-text {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        @keyframes audio-track-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .post-content {
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .post-content a {
+            color: #333;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+        
+        .post-content a:hover {
+            color: #000;
+            background-color: #f0f0f0;
+        }
+
+        .blog-post {
+            margin-bottom: 30px;
+        }
+
+        .blog-post:not(:last-child) {
+            padding-bottom: 20px;
+            border-bottom: 3px double #ccc;
+        }
+
+        .subject {
+            padding-top: 20px !important;
+        }
+
+        .camera-button {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .camera-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .photo-gallery {
+            display: none;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .photo-gallery.active {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            opacity: 1;
+        }
+
+        .photo-gallery img {
+            width: 100%;
+            height: auto;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-gallery img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+
+
+
+            <div class="blog-post" id="shrimp-fishing">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#shrimp-fishing" style="text-decoration: none; color: inherit;">Shrimp fishing OG</a></div>
+                        <div class="post-date">February 1, 2026</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">Infinity Frequencies - Lost Dreams</span>
+                                    <span class="audio-track-text" aria-hidden="true">Infinity Frequencies - Lost Dreams</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_5" preload="metadata">
+                                <source src="/music/lost-dreams.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+
+                    <p>Back in 2011, I was ahead of the curve, vacuuming up eight hours a day of algorithmic content well before that became the norm. One day I came across a Facebook post about "indoor shrimp fishing" in Taiwan. I was instantly fascinated, mostly by the novelty.</p>
+
+                    <p>We have trout farms in the US, but nothing involving shrimp, and nothing that quite matches the family activity aspect. The closest American analog might be a trout farm, though culturally it feels closer to bowling. Bring the kids, go with friends, maybe have a few drinks and some food. Something to do in any weather, not too expensive. There is a high skill ceiling but a low barrier to entry. People have customized tackle boxes, specialized gear, superstitions, and an almost intimate knowledge of the <a href="https://en.wikipedia.org/wiki/Macrobrachium_rosenbergii">giant freshwater prawn</a>.</p>
+
+                    <p>When I first landed in Taipei, I stayed at a friend's place way out in New Taipei City. I frequented a shrimping spot for a few weeks and ended up making some local friends, picking up fishing-related vocabulary, and getting the hang of it. Adjusting the pole by measuring the water line, baiting the hooks, which requires a surprising amount of dexterity. Mostly, though, I drank beers, ripped cigs, and soaked up as much Chinese as I could without being a wallflower. After a year or two, I drifted out of touch as I moved inward toward Taipei, leaned into more hipsterish pursuits, and tried to take my career more seriously.</p>
+
+                    <p>I briefly toyed with the idea of opening my own shrimping spot in America, despite having no access to capital and far more imagination than a concrete business plan. Liability, sourcing shrimp, and a long list of other constraints quickly dissuaded me. Still, I think some kind of upmarket or remixed shrimp fishing concept could work in China or Taipei. Most existing pools in Taiwan are tucked into low-rent warehouses, filled with janky forests of tubing and pumps, and an alien planet's worth of off-putting smells.</p>
+
+                    <p>Fathers bring their kids to learn patience, caution, and maybe the thrill of hooking, grilling, and eating something alive. Killing what you eat is not a common experience for urban Taiwanese, so the act of wrangling and then killing a living thing feels like an important and concrete encounter with reality.</p>
+
+                    <p>One of my fondest memories of living in Tianmu was hopping on my motorcycle, riding up the side of <a href="https://en.wikipedia.org/wiki/Yangmingshan">Yangmingshan</a> on a crisp fall morning on my <a href="https://duckduckgo.com/?q=KTR+150+motorcycle+wikipedia&ia=images&iax=images">KTR-150</a>, getting some sunshine, and wasting away two hours steeped in nicotine and <a href="https://zh.wikipedia.org/zh-tw/%E5%8D%97%E4%BA%9E%E9%A3%9F%E5%93%81">Vitali</a> while flicking up a few shrimpies.</p>
+
+                    <p>If I fail at making the world a better place and only manage to achieve self-reliance under the weight of late stage capitalism, I hope World War 3 never starts. I would like at least a modest retirement of karaoke, shrimp fishing, and artistic pursuits somewhere in the Taiwanese countryside.</p>
+                    
+                    <div class="shrimp-photos" style="margin-top: 20px;">
+                        <img src="https://i.ibb.co/twbkzpSG/FB-IMG-1591710056781.jpg" alt="Shrimping photo 1" style="width: 100%; height: auto; display: block; margin-bottom: 15px; border: 2px solid #ccc; border-radius: 8px;">
+                        <img src="https://i.ibb.co/Hwjvn8R/FB-IMG-1595373844970.jpg" alt="Shrimping photo 2" style="width: 100%; height: auto; display: block; border: 2px solid #ccc; border-radius: 8px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-post" id="luzon-loop">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#luzon-loop" style="text-decoration: none; color: inherit;">Gin, Rust, and leaving Asia</a></div>
+                        <div class="post-date">January 21, 2026</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">Budots Dance Mix Vol. 4</span>
+                                    <span class="audio-track-text" aria-hidden="true">Budots Dance Mix Vol. 4</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_4" preload="metadata">
+                                <source src="/music/budots.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>2025 was hectic. I bounced all over SE Asia, mixing work with travel. My final trip was to the Philippines with my close Taiwanese buddies. A last hurrah before my impending move back to the US.</p>
+                    
+                    <p>My luck was a mixed bag. While my previous vacation with this crew in 2024 was entirely funded by Sic Bo winnings, a streak of bad luck on the Baccarat table evened the score this time around.</p>
+                    
+                    <p>Manila remains a gong show to me. I have yet to be drawn to it in any meaningful way. Angeles City’s reputation is equally well-deserved. There is a kind of seedy charm to it, like a penthouse in Reno. These days I’m too sensitive to the poverty and exploitation to stay more than a day or two.</p>
+                    
+                    <p>You can easily fit all of Taiwan in just the top third of Luzon, it is deceptively large. I don't mind riding in Jeepneys, but not renting a private car would have doubled our trip time. Our resort in Zambales was modest: a handful of rooms, a bar, and a pool facing the South China Sea all run by a hospitable local family. The beach wasn't particularly clean, but a fully clean beach is impossible here without constant maintenance and upstream waste control. Still, the Filipino urban environment echoes Taiwan in a way I love, just more exaggerated. Spats of greenery and beach life baking in the sun, acid rain stains and rust contrasting with the greyscale of sand and cement.</p>
+                    
+                    <p>After a night of drinking a lethal local gin and dancing to Budots beachside with some new friends, I endured a grueling hangover the next day. In that moment of misery, I was convinced I needed to pull the rip cord on my time in Asia and get to the USA as soon as possible. I saw the writing on the wall: my time in Taiwan had to come to an end for the time being.</p>
+                    
+                    <p>I moved to Colorado for about 5 months, and then did a complete 180.</p>
+                    
+                    <p>Living in a small American apartment was just not for me. While the natural beauty of Colorado is undeniable, and I found pockets of community, it never felt like a long-term home. My mind and my algorithm constantly fed me a million just-out-of-reach futures that didn't involve the Denver metro area. I also found myself a bit burnt out on tech, despite the exciting generational shifts happening in the industry, like the flattening of various product and development lifecycles, attention and growth games, access to capital, and more.</p>
+                    
+                    <p>So, I’m planning a return to Luzon for a wellness stint this winter. I’ve taken personal offense to the fact that I can no longer touch my toes. I’m cutting costs drastically and committing to a regimen of calisthenics, yoga, natural movement, and swimming. I plan on living a slower life, aiming to be (mostly) offline for a few months.</p>
+                    
+                    <p>I will work on myself and see if any new careers emerge from this period of introspection. Depending on what happens, I will likely get the itch to adventure again or throw myself headlong into a new career.</p>
+                </div>
+            </div>
+
+            <div class="blog-post" id="tech-labor-career">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#tech-labor-career" style="text-decoration: none; color: inherit;">Tech, labor, career</a></div>
+                        <div class="post-date">January 20, 2026</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">Charley Crockett - $10 Cowboy</span>
+                                    <span class="audio-track-text" aria-hidden="true">Charley Crockett - $10 Cowboy</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_3" preload="metadata">
+                                <source src="/music/10-dollar-cowboy.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Having an open work permit in Taiwan is a rare kind of freedom. Unlike the restrictive ARCs tied to specific employers or student visas, I have the legal green light to do just about anything.</p>
+                    
+                    <p>Lately, I’ve been weighing two very different paths. On one hand, I’m considering a minimum-wage contracting gig to learn the hands-on skills needed to eventually remodel a house myself. On the other, I’ve thought about working at McDonald’s—partly for the "bit," but mostly because I genuinely enjoy physical labor. There is something more visceral and human about working elbow-to-elbow with people in the real world compared to the sanitized isolation of a laptop in a coffee shop.</p>
+                    
+                    <p>I’ve always been a generalist. I love getting my hands dirty, mastering a craft, and then pivoting to the next challenge. Whether that’s a boon or a bane remains to be seen. While I’m still applying for tech roles, the current market is dire. My fascination lies at the intersection of crypto, crime, and privacy—the eternal cat-and-mouse game between law enforcement and bad actors. Breaking into this field from "0 to 1" as a non-technical person is a tall order, but it’s a challenge I’m ready to explore.</p>
+                    
+                    <p>Logically, the move is to double down on AI-powered workflows. "Vibe coding" platforms like Bolt.new are useful, and I’ve enjoyed experimenting with n8n. However, I have a personal boundary: I can’t bring myself to use GenAI for "get rich quick" side hustles. It feels hollow, bordering on immoral.</p>
+                    
+                    <p>We are living in a time where the cost of starting up is plummeting while the cost of attention is skyrocketing. In this climate, I’m leaning into the "just do things" mentality of Gen Alpha and Zoomers, rather than relying on a lengthy CV to open doors.</p>
+
+                    <p>Beyond my backlog of non-profit ideas and niche Taiwan IoT products, I’m looking toward AML (Anti-Money Laundering), robotics, and even "anti-tech" industries. Even if none of these moonshots land, I’m content knowing I can always support myself while making a positive impact on a classroom of Taiwanese kids.</p>
+
+                    <p><strong>Concepts I'm currently chewing on:</strong></p>
+                    <ul>
+                        <li>Government Accountability as a Service</li>
+                        <li>Personal data sovereignty infrastructure</li>
+                        <li>Data poisoning as a service (to protect privacy)</li>
+                        <li>Democratizing and de-risking privacy infra (I2P/TOR)</li>
+                        <li>Gamified civic engagement and community-in-a-box apps</li>
+                        <li>Unionization as a Service</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="blog-post" id="chinese-learning">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#chinese-learning" style="text-decoration: none; color: inherit;">My Chinese Learning Journey</a></div>
+                        <div class="post-date">January 20, 2026</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">Cashmoon</span>
+                                    <span class="audio-track-text" aria-hidden="true">Cashmoon</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_2" preload="metadata">
+                                <source src="/music/cashmoon.mp4" type="audio/mp4">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p><em>"You’ve met me at a very "Chinese" time in my life."</em></p>
+                    <p>While I’m by no means a native speaker, I’ve reached HSK 5 proficiency through self-study and total immersion. In my opinion—and despite popular belief—Mandarin Chinese is objectively an easy language to learn. The grammar is far more straightforward than most languages. Since I spend 99% of my time speaking or typing on a phone, there have been only three occasions in the last decade where I actually wished I could hand-write the complex traditional calligraphy used in Taiwan.</p>
+                    <p>While Spanish is undeniably beautiful, I found it much harder to progress beyond a college level. The mental load required to constantly conjugate verbs in real-time conversations was simply more taxing than Mandarin.</p>
+                    
+                    <ol>
+                        <li><strong>Passive Immersion:</strong> It took me about two years of listening to people "yap" without understanding a word before I could truly hear the tones and nuances of Taiwanese Mandarin.</li>
+                        <li><strong>Active Usage:</strong> You have to talk to people, make mistakes, and put yourself in uncomfortable situations to force recall and retention.</li>
+                        <li><strong>The "Book Learning" Trap:</strong> I’ve memorized thousands of words only to forget them because I never used them. There are diminishing returns to rote learning if the vocab doesn't apply to your daily life (shopping, relationships, food, etc.).</li>
+                    </ol>
+
+                    <p>Learning Chinese wasn’t instant golden ticket to a corner office I had hoped, but it has afforded me three things:</p>
+                    <ul>
+                         <li>An impressive line item on my CV.</li>
+                         <li>A wealth of life experiences unavailable to most.</li>
+                         <li>A very cool party trick.</li>
+                    </ul>
+                    
+                    <h3>Tools</h3>
+                    <ul>
+                        <li><strong>Hack Chinese:</strong> A fantastic tool for tracking exactly where you stand with vocabulary.</li>
+                        <li><strong>Migaku:</strong> A cool AI-powered extension for immersive language learning (<a href="https://migaku.com/" target="_blank">migaku.com</a>).</li>
+                        <li><strong>Pleco:</strong> The best dictionary app. Use the flashcard add-on to study on the go.</li>
+                        <li><strong>Physical Sticky Notes:</strong> I used to stick Post-its on the outside of my shower glass. Say full sentences out loud and pantomime the situation to make the memory "sticky." With tens of thousands of characters out there, it’s easy for them to go in one ear and out the other.</li>
+                        <li><strong>Modern Textbooks:</strong> Any contemporary book will do. Just ensure it focuses on the region (Mainland China vs. Taiwan) where you plan to immerse yourself, as the vocabulary and pronunciation differ slightly.</li>
+                    </ul>
+
+                    <h3>AI and other cool stuff</h3>
+                    <p>I'm genuinely interested in the future of language learning, particularly AI translation software and hardware. For self-motivated learners, now is a great time to get hands-on with AI, making your workflow easy to track, manage, and scale. (Like <a href="https://github.com/joshp123/xuezh" target="_blank">this repo</a> that you can connect to OpenClaw or other LLMs.)</p>
+
+                    <p>Overall, my philosophy is that you need to get your hands dirty, make mistakes, and put in the work. That said, having sci-fi level instant flawless translation via a necklace or earbud is likely only years away. (This assumes we have enough quality data to train and improve these models.)</p>
+                </div>
+            </div>
+
+            <div class="blog-post" id="new-website">
+                <div class="post-header">
+                    <div class="post-title-row">
+                        <div class="post-title"><a href="#new-website" style="text-decoration: none; color: inherit;">New website launch</a></div>
+                        <div class="post-date">January 13, 2026</div>
+                    </div>
+                    <div class="post-music">
+                        <div class="audio-player" data-volume="0.1">
+                            <img class="audio-icon" src="/assets/rock.png" alt="Record player">
+                            <button class="audio-toggle" type="button">play</button>
+                            <div class="audio-progress" role="button" aria-label="Seek audio">
+                                <div class="audio-progress-fill"></div>
+                            </div>
+                            <div class="audio-time" aria-live="polite">0:00</div>
+                            <div class="audio-volume" role="button" aria-label="Set volume">
+                                <div class="audio-volume-fill"></div>
+                            </div>
+                            <div class="audio-track">
+                                <div class="audio-track-inner">
+                                    <span class="audio-track-text">invention - trillium</span>
+                                    <span class="audio-track-text" aria-hidden="true">invention - trillium</span>
+                                </div>
+                            </div>
+                            <audio id="diary_audio_1" preload="metadata">
+                                <source src="/music/trillium.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Welcome to the new site! This is a slower place to share more meaningful content away from the algorithm.</p>
+                    <p>I've been working on this space as a way to document thoughts, share art, and connect with people in a more intentional way. No likes, no feeds, just content.</p>
+                    <p>Now I need to slowly upload all my old art, work on the writing, and keep my creative juices flowing...</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function formatAudioTime(time) {
+            if (!isFinite(time)) {
+                return '0:00';
+            }
+            var minutes = Math.floor(time / 60);
+            var seconds = Math.floor(time % 60);
+            return minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+        }
+
+        function updateAudioPlayer(player, audio) {
+            var fill = player.querySelector('.audio-progress-fill');
+            var timeDisplay = player.querySelector('.audio-time');
+            var progress = 0;
+            if (audio.duration && isFinite(audio.duration)) {
+                progress = audio.currentTime / audio.duration;
+            }
+            if (fill) {
+                fill.style.width = (progress * 100) + '%';
+            }
+            if (timeDisplay) {
+                timeDisplay.textContent = formatAudioTime(audio.currentTime);
+            }
+        }
+
+        function syncAudioToggle(player, audio) {
+            var toggle = player.querySelector('.audio-toggle');
+            if (toggle) {
+                toggle.textContent = audio.paused ? 'play' : 'pause';
+            }
+        }
+
+        function updateVolumeControl(player, audio) {
+            var volumeFill = player.querySelector('.audio-volume-fill');
+            if (volumeFill) {
+                volumeFill.style.width = Math.round(audio.volume * 100) + '%';
+            }
+        }
+
+        function pauseOtherAudios(currentAudio) {
+            document.querySelectorAll('.audio-player audio').forEach(function(otherAudio) {
+                if (otherAudio !== currentAudio && !otherAudio.paused) {
+                    otherAudio.pause();
+                }
+            });
+        }
+
+        document.querySelectorAll('.audio-player').forEach(function(player) {
+            var audio = player.querySelector('audio');
+            if (!audio) {
+                return;
+            }
+
+            var toggle = player.querySelector('.audio-toggle');
+            var progress = player.querySelector('.audio-progress');
+            var volumeControl = player.querySelector('.audio-volume');
+            var volume = parseFloat(player.getAttribute('data-volume'));
+
+            if (!isNaN(volume)) {
+                audio.volume = volume;
+            }
+
+            if (toggle) {
+                toggle.addEventListener('click', function() {
+                    if (audio.paused) {
+                        pauseOtherAudios(audio);
+                        audio.play();
+                    } else {
+                        audio.pause();
+                    }
+                });
+            }
+
+            if (progress) {
+                progress.addEventListener('click', function(event) {
+                    if (!audio.duration || !isFinite(audio.duration)) {
+                        return;
+                    }
+                    var rect = progress.getBoundingClientRect();
+                    var percent = (event.clientX - rect.left) / rect.width;
+                    percent = Math.min(1, Math.max(0, percent));
+                    audio.currentTime = percent * audio.duration;
+                });
+            }
+
+            if (volumeControl) {
+                volumeControl.addEventListener('click', function(event) {
+                    var rect = volumeControl.getBoundingClientRect();
+                    var percent = (event.clientX - rect.left) / rect.width;
+                    percent = Math.min(Math.max(percent, 0), 1);
+                    audio.volume = percent;
+                    updateVolumeControl(player, audio);
+                });
+            }
+
+            audio.addEventListener('timeupdate', function() {
+                updateAudioPlayer(player, audio);
+            });
+
+            audio.addEventListener('loadedmetadata', function() {
+                updateAudioPlayer(player, audio);
+            });
+
+            audio.addEventListener('play', function() {
+                pauseOtherAudios(audio);
+                syncAudioToggle(player, audio);
+            });
+
+            audio.addEventListener('pause', function() {
+                syncAudioToggle(player, audio);
+            });
+
+            audio.addEventListener('ended', function() {
+                syncAudioToggle(player, audio);
+            });
+
+            audio.addEventListener('error', function() {
+                console.warn('Audio failed to load:', audio.querySelector('source')?.src);
+                var parent = audio.closest('.post-music');
+                if (parent) {
+                    var errorMsg = document.createElement('div');
+                    errorMsg.style.cssText = 'color: #000; font-size: 11px; margin-top: 4px; letter-spacing: 0.3px;';
+                    errorMsg.textContent = 'Audio unavailable - external source may be blocked';
+                    parent.appendChild(errorMsg);
+                }
+            });
+
+            syncAudioToggle(player, audio);
+            updateVolumeControl(player, audio);
+            updateAudioPlayer(player, audio);
+            audio.load();
+        });
+
+        function toggleShrimpPhotos() {
+            const gallery = document.getElementById('shrimpGallery');
+            if (gallery.classList.contains('active')) {
+                gallery.style.opacity = '0';
+                setTimeout(() => {
+                    gallery.classList.remove('active');
+                }, 500);
+            } else {
+                gallery.classList.add('active');
+                setTimeout(() => {
+                    gallery.style.opacity = '1';
+                }, 10);
+            }
+        }
+    </script>
+</body>
+
+</html>

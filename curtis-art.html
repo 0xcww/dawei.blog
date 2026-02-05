@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STROVI.ART</title>
+    <meta name="description" content="This is a corner for myself.">
+    <link href="indexstyle.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="icon" type="image/png" href="" />
+    <script src="img.js"></script>
+    
+    <script>Object.prototype.each = function(f){
+    var l = this.length;
+    for(var i=0;i<l;i++)
+        {
+            try {
+                this[i].eachCall = f;
+                this[i].eachCall(this[i]);
+            } catch(e){ throw e; }
+        }
+};
+
+document.getElementsByTagName('iframe1').each(function(){this.src=this.src;});</script>
+
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="header"> <img src="https://strovi.neocities.org/flair/STROVI%20BANNER.png" style="width:350px;">  </div> 
+        <div class="sidebar">
+
+            <div class="sidelefttitle">
+                .//NAVIGATION
+            </div> <br>
+            <div class="sidebarlinks">
+                <a href="/home.html" target="iframe1">HOME</a> <br>
+                <a href="/about.html" target="iframe1">ABOUT ME</a> <br>
+                <a href="/diary.html" target="iframe1">DIARY</a> <br>
+                <a href="/galleria/galleria.html">ART GALLERY</a> <br>
+                <a href="/funstuff.html" target="iframe1">FUN STUFF</a> <br>
+                <a href="/helpfulthings.html" target="iframe1">WEB HELP</a> <br>
+        
+
+            </div>
+            <div class="musicbox"><marquee  behavior="scroll" scrollamount="2" style="font-size:10px; align:center; color:gray;"> sunshflowers and illusions - SHOGO SAKAI</marquee><audio controls  loop=true id="my audio">
+                    <source src="https://starmen.net/mother3/music/Mother%203%20-%20166%20Sunflowers%20and%20Illusions.ogg" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio> 
+                <script>
+  var audio = document.getElementById("my audio");
+  audio.volume = 0.1;
+</script>
+            </div> 
+            
+            <div class="message">THANKS FOR  100K HITS! <br><br> <small>use my button</small><br>  <br><img src="https://strovi.neocities.org/flair/button.png"> <br><script type="text/javascript" src="//counter.websiteout.net/js/21/6/78590/0"> </script> <br> <br>
+                
+            
+            <a href="http://users3.smartgb.com/g/g.php?a=s&i=g36-33035-4c" target=""><u>Sign my guestbook!</u></a> <br>
+            </div>
+
+        </div>
+
+        <div class="content">
+            <iframe class="mainbox" src="home.html" margin="0 auto" name="iframe1"> </iframe>
+            
+
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>

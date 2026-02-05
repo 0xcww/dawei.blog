@@ -1,0 +1,49 @@
+; BIND Zone File for Custom Domain (WordPress.com Domain)
+; NOTE: WordPress.com typically uses a web interface for DNS records
+; This file is for reference - you'll add these records through WordPress.com dashboard
+;
+; Instructions for WordPress.com:
+; 1. Go to My Sites → Upgrades → Domains
+; 2. Click your domain → Name Servers and DNS → DNS Records
+; 3. Add the records below based on your hosting platform
+
+$TTL 3600
+@       IN      SOA     ns1.wordpress.com. admin.yourdomain.com. (
+                        2026012201      ; Serial (YYYYMMDDNN)
+                        3600            ; Refresh
+                        1800            ; Retry
+                        604800          ; Expire
+                        86400 )         ; Minimum TTL
+
+; ============================================
+; OPTION 1: For Netlify Hosting
+; ============================================
+; @       IN      A       75.2.60.5
+; www     IN      CNAME   your-site-name.netlify.app.
+
+; ============================================
+; OPTION 2: For Vercel Hosting
+; ============================================
+; @       IN      A       76.76.21.21
+; www     IN      CNAME   cname.vercel-dns.com.
+
+; ============================================
+; OPTION 3: For GitHub Pages Hosting
+; ============================================
+; @       IN      A       185.199.108.153
+; @       IN      A       185.199.109.153
+; @       IN      A       185.199.110.153
+; @       IN      A       185.199.111.153
+; www     IN      CNAME   yourusername.github.io.
+
+; ============================================
+; OPTION 4: For Custom Server
+; ============================================
+; Replace with your actual server IP
+; @       IN      A       YOUR_SERVER_IP
+; www     IN      CNAME   yourdomain.com.
+
+; CAA Records (SSL Certificate Authority Authorization)
+; WordPress.com may handle these automatically
+@       IN      CAA     0 issue "letsencrypt.org"
+@       IN      CAA     0 issuewild "letsencrypt.org"

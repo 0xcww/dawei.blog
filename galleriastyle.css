@@ -1,0 +1,204 @@
+body {
+    color: black;
+    background-color: lightgray;
+    background-image: url("images/art-background.png");
+    background-repeat: repeat;
+}
+
+body a {
+    color: dimgrey;
+}
+
+.corn {
+    margin: 0 auto;
+    margin-top: 50px;
+    background-color: white;
+    width: 1100px;
+    height: 800px;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0px 0px 40px black;
+    border-bottom: 3px double black;
+    border-top: 3px double black;
+    border-right: 1px dashed black;
+    border-left: 1px dashed black;
+    display: flex;
+
+}
+
+.sidenav {
+    background-color: white;
+    box-shadow: 4px 4px 5px grey;
+    padding: 10px;
+    width: 110px;
+    height: 780px;
+    float: left;
+    font-family: ms gothic;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px black solid;
+    border-bottom: 1px black solid;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.main {
+    padding: 10px;
+    margin-left: 10px;
+
+    float: right;
+    width: 1050px;
+    height: 780px;
+    border: 1px solid black;
+    box-shadow: 4px 4px 5px grey;
+}
+
+.tableof {
+
+    background-color: white;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid black;
+    font-size: 12px;
+    margin-top:5px;
+    margin-bottom:0px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 4px;
+    margin-right:2px;
+    width: 100px;
+    font-family: ms pgothic;
+    box-shadow: 4px 5px lightgray;
+
+
+
+}
+
+.tableof2 {
+
+    background-color: white;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid black;
+    font-size: 12px;
+    margin-top:5px;
+    margin-bottom:0px;
+    padding-top: 8px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    margin-right:2px;
+    width: 100px;
+
+    box-shadow: 4px 5px lightgray;
+    flex:auto;
+}
+
+.tableof3 {
+
+    background-color: white;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid black;
+    font-size: 12px;
+    margin-top:5px;
+    margin-bottom:0px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 4px;
+    margin-right:2px;
+    width: 100px;
+    font-family:ms pgothic;
+    box-shadow: 4px 5px lightgray;
+    flex:auto;
+}
+
+.tableof4 {
+
+    background-color: white;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid black;
+    font-size: 12px;
+    margin-top:5px;
+    margin-bottom:0px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 4px;
+    margin-right:2px;
+    width: 100px;
+    font-family:ms pgothic;
+    box-shadow: 4px 5px lightgray;
+    flex:auto;
+}
+
+.nav{
+
+    margin-top:2px;
+    margin-bottom:2px;
+    padding:2px 3px;
+    line-height:13px;
+    font-size:12px;
+    font-family:ms gothic;
+
+
+
+}
+
+.nav-section {
+    display: none;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    margin: 0;
+    padding: 0;
+}
+
+#writing-section {
+    display: block;
+}
+
+.nav a {
+    display: block;
+    padding: 1px 0;
+    text-decoration: none;
+    color: dimgrey;
+}
+
+.nav a:hover {
+    color: black;
+}
+
+.tableof-button {
+    background-color: white;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid black;
+    font-size: 12px;
+    margin-top: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 4px;
+    margin-right: 2px;
+    width: 100px;
+    font-family: ms pgothic;
+    box-shadow: 4px 5px lightgray;
+    text-align: center;
+}
+
+.tableof-button a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    display: block;
+}
+
+.tableof-button:hover {
+    background-color: #f0f0f0;
+}
+
+.ifwame {
+    width:934px;
+    height: 100%;
+    overflow:auto;
+}
+
+

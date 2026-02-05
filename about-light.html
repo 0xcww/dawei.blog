@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="This is a corner for myself.">
+    <link href="/iframe.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="icon" type="image/png">
+    <style>
+        .camera-button {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .camera-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .camera-button svg {
+            width: 100%;
+            height: 100%;
+            fill: #333;
+            transition: fill 0.3s ease;
+        }
+
+        .camera-button:hover svg {
+            fill: #666;
+        }
+
+        .photo-gallery {
+            display: none;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .photo-gallery.active {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            opacity: 1;
+        }
+
+        .photo-gallery img {
+            width: 100%;
+            height: auto;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-gallery img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="area">
+        <div class="subject">
+            <center>
+                <h3>ABOUT ME</h3>
+            </center>
+<br> 
+
+            Hi, my name is Curtis. I’m currently at a crossroads in my life laying low (<a href="https://en.wikipedia.org/wiki/Tang_ping">躺平</a>).<br><br>
+            One of my major goals in 2026 is to find an altruistic project that can survive on its own.<br><br>
+
+I like having a broad range of work experience. I've done all kinds of labor and service, I’ve worked in the Taiwanese tech industry, and most recently some web3 and AI start ups. <br><br>
+ 
+I’m from Oregon, but have lived in Taiwan for a long time. <br>
+I have a big fluffy white cat. <br>
+I am pretty good at Mandarin.<br>
+I enjoy cooking and singing karaoke.  
+
+            <br><br>
+
+            <center>
+                <h3>CV</h3>
+            </center>
+            <br>
+
+            <b>The Invention Network</b> - Denver, CO<br>
+            <i>Head of Community</i> | 2025 - 2026<br><br>
+            Standing up new community platforms and social plans. <br><br>
+            Plan growth flywheel between product and leadership teams while working with top web3 agencies. <br><br>
+            Create and tune AI automations for a variety of workflows using n8n. <br><br>
+            Crafting engaging and legible GTM plans content across all channels. <br><br><br><br>
+
+            <b>Eigen Labs</b> - Remote<br>
+            <i>Support and Community Manager</i> | 2024 - 2025<br><br>
+            Owned the design and iteration of tokenized programs, social marketing stunts, and contests, directly driving user engagement and product adoption for EigenLayer.<br><br>
+            Led the overarching community strategy and messaging across the labs and foundation entities while restructuring the Community Discord to lead education and engagement campaigns.<br><br>
+            Created, owned, and revamped highly-technical support systems for stakers, node operators, CEX, DEX, and web3 infrastructure customers, improving response metrics and CSAT by orders of magnitude.<br><br>
+            Leveraged Chainalysis to detect and mitigate fraudulent and high-risk blockchain activity, ensuring regulatory compliance.<br><br>
+            Managed 1 internal support engineer alongside 10 marketing agency vendors and moderators.<br><br><br><br>
+
+            <b>Rio Network</b> - Remote<br>
+            <i>Community Manager</i> | 2023 - 2024<br><br>
+            Led the end-to-end creation of community strategy and support infrastructure for a liquid restaking token, serving investors, node operators, and dApp users.<br><br>
+            Established foundational community spaces and programs to foster advocacy and support adoption during a critical launch phase.<br><br><br><br>
+
+            <b>Taipei Blockchain Week</b> - Taipei, Taiwan<br>
+            <i>Social Media Manager</i> | 2023 - 2024<br><br>
+            Volunteering to lead the social media efforts for a local blockchain event in Taiwan.<br><br><br><br>
+
+            <b>BLKSODA</b> - Taipei, Taiwan<br>
+            <i>Content Creator</i> | 2023 - 2024<br><br>
+            Created vertical video and photography content for various PC component companies based in Taiwan.<br><br><br><br>
+
+            <b>Bitski</b> - San Francisco, CA<br>
+            <i>Community and Support Manager</i> | 2021 - 2023<br><br>
+            Designed and executed social content, branding, and influencer campaigns, resulting in over 15,000 new followers on the company's Twitter, empowering users to champion the brand.<br><br>
+            Implemented white-glove UI/UX feedback loops from beta testers to Bitski's developers using Asana, Typeform, and Discord, ensuring community insights directly influenced product iteration.<br><br>
+            Wrote over a hundred support articles covering fiat, crypto, and NFT products.<br><br>
+            Managed Zendesk tickets and provided regular analytics reports to product teams, defining key success metrics.<br><br><br><br>
+
+            <b>Myria</b> - Remote<br>
+            <i>Social Marketing Manager</i> | 2022 - 2022<br><br>
+            Created social and marketing campaigns for web3 game titles and a zk-STARK L2, doubling engagement over a month while delivering product announcements via Twitter, Discord, Telegram, and Instagram.<br><br>
+            Prepared qualitative competitive analysis reports on the blockchain gaming market and competitors using Confluence, public social metrics, and on-chain data.<br><br><br><br>
+
+            <b>ASUS (Republic of Gamers)</b> - Taipei, Taiwan<br>
+            <i>Global Social Media Manager</i> | 2018 - 2021<br><br>
+            Managed five social platforms with 12 million total fans.<br><br>
+            Grew the ROG Instagram page from 200k to 2.6 million fans while also generating millions of link clicks, page views, etc.<br><br>
+            Created brand-wide product and social strategy for enthusiast PC hardware while closely implementing with local teams.<br><br>
+            Directed branding and content creation with product marketing teams to increase output of deliverables while saving designer bandwidth.<br><br>
+            Responsible for over $200k USD in paid media for social ads during large-scale events like COMPUTEX, Gamescom, and other trade shows or livestreams.<br><br><br><br>
+
+            <b>ASUS (Republic of Gamers)</b> - Taipei, Taiwan<br>
+            <i>Global Social Media Specialist</i> | 2017 - 2018<br><br>
+            Created social content for gaming audiences using Photoshop, Premiere, and photography.<br><br>
+            Managed content planning and analytics using Excel, Social Bakers, Sprinklr, and other tools.<br><br>
+            Wrote a technical media review guide for an AI mesh wireless router product.<br><br><br><br>
+
+            <b>ADAM elements</b> - Taipei, Taiwan<br>
+            <i>Digital Marketing Specialist</i> | 2016 - 2017<br><br>
+            Managed the promotion plans of 3rd party iOS accessories, including press releases, social media, channel partners, and local retail teams.<br><br>
+            Ran email marketing campaigns with Mailchimp and ran Facebook ads with high ROI.<br><br>
+            Created streaming and visual content, assisted with trade shows.<br><br><br><br>
+
+            <b>Health Goth</b> - Portland, OR<br>
+            <i>Content Curator</i> | 2014 - 2017<br><br>
+            Grew an aesthetic fashion blog from 0 to 36,000 fans with my friends that influenced modern fashion around the world.<br><br>
+
+            <center>
+                <h3>VOLUNTEERING</h3>
+                <span class="camera-button" onclick="togglePhotos()" title="Click to view photos">
+                    <svg id="retro-camera" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="m22,3v-1H2v1h-1v18h1v1h20v-1h1V3h-1ZM3,4h6v1H3v-1Zm7,16H3v-10h7v1h-2v2h-1v4h1v2h2v1Zm-1-3v-4h1v-1h4v1h1v4h-1v1h-4v-1h-1Zm12,3h-7v-1h2v-2h1v-4h-1v-2h-2v-1h7v10Zm0-12H3v-1h6v-1h1v-1h1v-1h10v4Z"/>
+                        <polygon points="13 13 13 14 11 14 11 16 10 16 10 13 13 13"/>
+                    </svg>
+                </span>
+            </center>
+
+            <div id="photoGallery" class="photo-gallery">
+                <img src="https://i.ibb.co/vCbS0cTJ/volunteering.jpg" alt="Volunteering photo 1">
+                <img src="images/screenshot_2026-01-13_at_3.59.26_pm.png" alt="Volunteering photo 2">
+                <img src="https://i.ibb.co/XZwTDMBh/18029076571468899.jpg" alt="Volunteering photo 3">
+                <img src="images/screenshot_2026-01-13_at_3.59.57_pm.png" alt="Volunteering photo 4">
+            </div>
+
+            <br>
+            <br><b>SOLV Oregon</b> - Portland, OR<br>
+            2023 - 2025<br>
+            Joining trash pick up events around downtown Portland every time I visit home.<br><br>
+
+              <br><b>Portland Homeless Family Solutions</b> - Portland, OR<br>
+            2011 - 2013<br>
+            Volunteered every few weeks to stay overnight at a small shelter for displaced families in downtown Portland.  <br><br>
+
+        </div>
+    </div>
+
+    <script>
+        function togglePhotos() {
+            const gallery = document.getElementById('photoGallery');
+            if (gallery.classList.contains('active')) {
+                gallery.style.opacity = '0';
+                setTimeout(() => {
+                    gallery.classList.remove('active');
+                }, 500);
+            } else {
+                gallery.classList.add('active');
+                setTimeout(() => {
+                    gallery.style.opacity = '1';
+                }, 10);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-Equiv="Cache-Control" Content="no-cache" />
+    <meta http-Equiv="Pragma" Content="no-cache" />
+    <meta http-Equiv="Expires" Content="0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CW | 小魏</title>
+    <meta name="description" content="這是屬於我自己的小角落。">
+    <link href="art/galleriastyle.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: light)">
+    <link href="art/galleriastyle-dark.css" rel="stylesheet" type="text/css" media="(prefers-color-scheme: dark)">
+    <link href="art/galleriastyle-dark.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="images/shrimp_favicon_white.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" href="images/shrimp_favicon_dark.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" href="images/shrimp_favicon_white.png" />
+
+    <script>
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            var computedDisplay = window.getComputedStyle(section).display;
+            if (computedDisplay === 'none') {
+                section.style.display = 'block';
+                section.style.height = 'auto';
+            } else {
+                section.style.display = 'none';
+                section.style.height = '0';
+            }
+        }
+
+        function loadContent(url, event) {
+            if (event) event.preventDefault();
+            const contentArea = document.getElementById('content-area');
+
+            // Remove any previously injected styles from other content pages
+            document.querySelectorAll('style[data-content-style]').forEach(s => s.remove());
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    // Extract and inject styles from the loaded page's head
+                    const styles = doc.querySelectorAll('head style');
+                    styles.forEach(style => {
+                        const newStyle = document.createElement('style');
+                        newStyle.textContent = style.textContent;
+                        newStyle.setAttribute('data-content-style', 'true');
+                        document.head.appendChild(newStyle);
+                    });
+
+                    const bodyContent = doc.querySelector('.area') || doc.body;
+
+                    // Also include any lightbox elements that are outside .area
+                    const lightbox = doc.querySelector('.lightbox');
+                    let lightboxHTML = '';
+                    if (lightbox) {
+                        lightboxHTML = lightbox.outerHTML;
+                    }
+
+                    contentArea.innerHTML = bodyContent.innerHTML + lightboxHTML;
+
+                    // Initialize lazy loading for images with data-src using content-area as root
+                    initLazyLoading(contentArea);
+
+                    // Initialize lightbox functionality
+                    initLightbox(contentArea);
+
+                    contentArea.scrollTop = 0;
+                })
+                .catch(error => {
+                    console.error('Error loading content:', error);
+                    contentArea.innerHTML = '<div style="padding: 20px; text-align: center;">載入內容時出錯。請重試。</div>';
+                });
+        }
+
+        function initLazyLoading(container) {
+            const lazyImages = container.querySelectorAll('img[data-src]');
+            if (lazyImages.length === 0) return;
+
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.add('loaded');
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                root: container,
+                rootMargin: '50px'
+            });
+
+            lazyImages.forEach(img => imageObserver.observe(img));
+        }
+
+        function initLightbox(container) {
+            const lightbox = container.querySelector('.lightbox');
+            if (!lightbox) return;
+
+            const lightboxImg = lightbox.querySelector('.lightbox-content');
+            const lightboxClose = lightbox.querySelector('.lightbox-close');
+            const lightboxPrev = lightbox.querySelector('.lightbox-prev');
+            const lightboxNext = lightbox.querySelector('.lightbox-next');
+
+            let currentImageIndex = 0;
+            let allImages = [];
+
+            function showLightbox(src) {
+                lightboxImg.src = src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            function showNextImage() {
+                currentImageIndex = (currentImageIndex + 1) % allImages.length;
+                lightboxImg.src = allImages[currentImageIndex].src;
+            }
+
+            function showPrevImage() {
+                currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+                lightboxImg.src = allImages[currentImageIndex].src;
+            }
+
+            container.addEventListener('click', (e) => {
+                if (e.target.matches('.photo-grid img')) {
+                    allImages = Array.from(container.querySelectorAll('.photo-grid img'));
+                    currentImageIndex = allImages.indexOf(e.target);
+                    showLightbox(e.target.src);
+                }
+            });
+
+            if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+            if (lightboxNext) lightboxNext.addEventListener('click', showNextImage);
+            if (lightboxPrev) lightboxPrev.addEventListener('click', showPrevImage);
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') showNextImage();
+                if (e.key === 'ArrowLeft') showPrevImage();
+            });
+        }
+    </script>
+    <style>
+        #content-area {
+            overflow-y: auto;
+            height: 100%;
+            background-color: #000;
+            color: white;
+            /* iframe-dark.css styles for loaded content */
+            font-family: ms pgothic;
+            text-shadow: 0 0 0px, 0 0 3px #333;
+            font-size: 15px;
+            line-height: 17px;
+        }
+        #content-area .area {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #000;
+        }
+        #content-area .subject {
+            width: auto;
+            max-width: 1200px;
+            box-sizing: border-box;
+            padding: 30px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin: 0 auto;
+        }
+        #content-area .subject p {
+            max-width: 700px;
+        }
+        #content-area .photo-grid {
+            max-width: 100%;
+        }
+        #content-area a {
+            text-decoration: underline;
+            color: white;
+        }
+        #content-area a:hover {
+            text-decoration: underline;
+            color: #ccc;
+        }
+        .default-content {
+            text-align: center;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .default-content p {
+            font-size: 18px;
+            font-family: ms gothic;
+            margin-bottom: 10px;
+        }
+        .default-content img {
+            max-width: 100%;
+            height: auto;
+            filter: grayscale(100%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+
+    </div>
+    <div class="corn">
+
+        <div class="sidenav" style="font-size:13px;  font-family: ms gothic; ">
+            <img src="images/teatima.gif" style="padding:15px; filter: invert(1);">
+
+            <div class="tableof2" onclick="toggleSection('design-section')" style="cursor: pointer;">
+                <b>設計作品</b>
+            </div>
+            <div id="design-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/design/xiao-wei-tshirt-zh.html" onclick="loadContent(this.href, event)">小魏 T恤</a>
+                </div>
+                <div class="nav">
+                    <a href="art/design/3d-lollipops-zh.html" onclick="loadContent(this.href, event)">3D 棒棒糖</a>
+                </div>
+            </div>
+
+            <div class="tableof3" onclick="toggleSection('video-section')" style="cursor: pointer;">
+                <b>影片作品</b>
+            </div>
+            <div id="video-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/video/aesthetic-mini-mvs-zh.html" onclick="loadContent(this.href, event)">美學迷你音樂錄影帶</a>
+                </div>
+            </div>
+
+            <div class="tableof5" onclick="toggleSection('social-section')" style="cursor: pointer;">
+                <b>SOCIAL</b>
+            </div>
+            <div id="social-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/social/social-campaigns-zh.html" onclick="loadContent(this.href, event)">社群媒體作品</a>
+                </div>
+            </div>
+
+            <div class="tableof" onclick="toggleSection('writing-section')" style="cursor: pointer;">
+                <b>文字創作</b>
+            </div>
+            <div id="writing-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/writing/host-club-zh.html" onclick="loadContent(this.href, event)">酒店與台灣8+9</a>
+                </div>
+            </div>
+
+            <div class="tableof4" onclick="toggleSection('misc-section')" style="cursor: pointer;">
+                <b>其他</b>
+            </div>
+            <div id="misc-section" class="nav-section">
+                <div class="nav">
+                    <a href="art/misc/taiwan-motorcycle-trip-zh.html" onclick="loadContent(this.href, event)">台灣機車環島</a>
+                </div>
+                <div class="nav">
+                    <a href="art/misc/tainan-saba-boy-zh.html" onclick="loadContent(this.href, event)">台南市與薩巴男孩</a>
+                </div>
+            </div>
+
+            <div class="tableof-button">
+                <a href="../index-zh.html" target="_parent">首頁</a>
+            </div>
+        </div>
+
+        <div class="main">
+            <div id="content-area">
+                <div class="default-content">
+                    <p>挑篇文章<br>Pick a post</p>
+                    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXAyMmZ5ZWdlenEzdjNtc3NrMXI0NW9qb3h1bm5xaWVxbXV3cGVobyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/oz45ELYgMoYVsZqmor/giphy.gif" alt="Bongo Cat">
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+</body>
+</html>

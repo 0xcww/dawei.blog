@@ -1,0 +1,179 @@
+body {
+    margin: 0 auto;
+    font-family: ms pgothic;
+    text-shadow: 0 0 0px, 0 0 3px #333;
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    background-image: url(images/shrimp_background-dark.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+}
+
+body::before {
+    content: 'I am a cloud in the sky, by chance casting my shadow on your heart\'s tide— you need not be surprised, nor take delight— in an instant, my trace is gone. You and I meet upon the sea at night: you have your course, and I have mine. Whether you remember matters little; better still, that you forget— the brief light we gave each other at this crossing. \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A  I am a cloud in the sky, by chance casting my shadow on your heart\'s tide— you need not be surprised, nor take delight— in an instant, my trace is gone. You and I meet upon the sea at night: you have your course, and I have mine. Whether you remember matters little; better still, that you forget— the brief light we gave each other at this crossing. \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A  Softly I am leaving, Just as softly as I came; I softly wave goodbye To the clouds in the western sky. The golden willows by the riverside Are young brides in the setting sun; Their glittering reflections on the shimmering river Keep undulating in my heart. The green tape grass rooted in the soft mud Sways leisurely in the water; I am willing to be such a waterweed In the gentle flow of the River Cam. That pool in the shade of elm trees Holds not clear spring water, but a rainbow Crumpled in the midst of duckweeds, Where rainbow-like dreams settle. To seek a dream? Go punting with a long pole, Upstream to where green grass is greener, With the punt laden with starlight, And sing out loud in its radiance. Yet now I cannot sing out loud, Peace is my farewell music; Even crickets are now silent for me, For Cambridge this evening is silent. Quietly I am leaving, Just as quietly as I came; Gently waving my sleeve, I am not taking away a single cloud. \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A  I am a cloud in the sky, by chance casting my shadow on your heart\'s tide— you need not be surprised, nor take delight— in an instant, my trace is gone. You and I meet upon the sea at night: you have your course, and I have mine. Whether you remember matters little; better still, that you forget— the brief light we gave each other at this crossing. \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A  I am a cloud in the sky, by chance casting my shadow on your heart\'s tide— you need not be surprised, nor take delight— in an instant, my trace is gone. You and I meet upon the sea at night: you have your course, and I have mine. Whether you remember matters little; better still, that you forget— the brief light we gave each other at this crossing. \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A \A  Softly I am leaving, Just as softly as I came; I softly wave goodbye To the clouds in the western sky. The golden willows by the riverside Are young brides in the setting sun; Their glittering reflections on the shimmering river Keep undulating in my heart. The green tape grass rooted in the soft mud Sways leisurely in the water; I am willing to be such a waterweed In the gentle flow of the River Cam. That pool in the shade of elm trees Holds not clear spring water, but a rainbow Crumpled in the midst of duckweeds, Where rainbow-like dreams settle. To seek a dream? Go punting with a long pole, Upstream to where green grass is greener, With the punt laden with starlight, And sing out loud in its radiance. Yet now I cannot sing out loud, Peace is my farewell music; Even crickets are now silent for me, For Cambridge this evening is silent. Quietly I am leaving, Just as quietly as I came; Gently waving my sleeve, I am not taking away a single cloud.';
+    position: fixed;
+    bottom: -20%;
+    left: 0;
+    width: 100%;
+    height: auto;
+    font-size: 29px;
+    line-height: 1.8;
+    color: #ccc;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+    word-wrap: break-word;
+    padding: 20px;
+    animation: fadeInPoem 0.5s ease-in forwards, scrollUp 60s linear infinite;
+}
+
+@keyframes fadeInPoem {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.15;
+    }
+}
+
+@keyframes scrollUp {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-200vh);
+    }
+}
+
+body a {
+    text-decoration: none;
+    color: white;
+
+}
+
+body a:hover {
+    text-decoration: underline;
+    color: #ccc;
+
+}
+
+.header {
+    margin:0 auto ;
+    margin-left: 28px;
+    padding:1px;
+}
+
+.main {
+    margin: 0 auto;
+    margin-top: 15px;
+    width: 1100px;
+    position: relative;
+    z-index: 1;
+}
+
+.sidebar {
+    margin: 0 auto;
+
+    width: 150px;
+    margin-left:28px;
+    height: 700px;
+    float: left;
+
+
+
+
+}
+
+.sidebarlinks {
+    padding: 15px;
+    background-color: #000;
+
+    line-height: 20px;
+    border: dotted 1px white;
+
+
+}
+
+
+.content {
+    margin: 0;
+    margin-right: 28px;
+    float: right;
+    border:1px solid #666;
+    width: 750px;
+    height: 700px;
+    padding: 15px;
+    background-color: #000;
+    box-shadow: 0px 0px 40px #000;
+}
+
+iframe {
+    margin: 0 auto;
+    width: 750px;
+    height: 700px;
+    border: transparent;
+}
+
+.sidelefttitle {
+
+    box-shadow: 0px 0px 30px #000;
+    background-color: #1a1a1a;
+    padding: 5px;
+    border: 1px dotted white;
+    text-align: left;
+
+    font-family: monospace;
+    letter-spacing: 2px;
+    text-shadow: 0 0 0px, 0 0 3px #333;
+
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.message {
+
+    background-color: #000;
+    border: 1px dotted white;
+    padding:10px;
+}
+.musicbox {
+    width: 150px;
+    border: 1px dotted white;
+    background-color: #1a1a1a;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 5px;
+}
+
+audio {
+    border-top:dotted white 1px;
+    border-radius: 0;
+    width: 150px;
+    max-width: 400px;
+    height: 35px;
+}
+
+#visitor-counter {
+    color: white;
+}
+
+.rss-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.rss-link .rss-icon {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+}
